@@ -1,19 +1,156 @@
 ---
 import Base from '../layouts/Base.astro';
 const base = import.meta.env.BASE_URL;
+
+// Walkthroughs in the order a new user meets them: set up, look around,
+// configure, collaborate, watch work happen, verify it, make it yours.
+const walkthroughs = [
+  {
+    id: 'getting-started',
+    title: 'Getting started',
+    video: 'onboarding.mp4',
+    body: 'Run the setup wizard once and Orcha builds your team for you — name yourself, describe your goal, and it proposes a roster of agents you review and create.',
+  },
+  {
+    id: 'dashboard',
+    title: 'Your dashboard',
+    video: 'dashboard.mp4',
+    body: 'Your home base. See what needs your attention, the agents on the job and the models they run on, and the whole task board at a glance.',
+  },
+  {
+    id: 'autonomy',
+    title: 'Setting the autonomy level',
+    video: 'autonomy.mp4',
+    body: 'Decide how far agents can go on their own — from plan-only, to building up to a pull request, to full autonomy — with a clear confirmation before each change.',
+  },
+  {
+    id: 'model-selection',
+    title: 'Choosing each agent’s model',
+    video: 'model-selection.mp4',
+    body: 'Give every agent the right brain for its job. Pick the AI model per agent in a couple of clicks.',
+  },
+  {
+    id: 'conversation',
+    title: 'Talking to an agent',
+    video: 'conversation.mp4',
+    body: 'Chat with an agent directly, and attach files or images when a screenshot or document says it better than words.',
+  },
+  {
+    id: 'requests',
+    title: 'Agents working together',
+    video: 'requests.mp4',
+    body: 'Agents ask each other — and you — for what they need through requests and task threads, so nothing happens in the dark.',
+  },
+  {
+    id: 'worker-runs',
+    title: 'Watching a worker run',
+    video: 'worker-runs.mp4',
+    body: 'Follow an agent live as it works — narration, the tools it calls, the results it gets, and a status badge when each run finishes.',
+  },
+  {
+    id: 'verification',
+    title: 'Verifying plans and work',
+    video: 'verification.mp4',
+    body: 'You stay in charge. Approve a plan before work starts, and verify the finished result before a task is marked complete.',
+  },
+  {
+    id: 'theme',
+    title: 'Light and dark themes',
+    video: 'theme.mp4',
+    body: 'Make it yours — flip the whole portal between dark and light whenever you like.',
+  },
+];
 ---
-<Base title="Usage Guide — Orcha" description="How to use Orcha day to day. Coming soon.">
-  <section class="coming">
+<Base title="Usage Guide — Orcha" description="A visual walkthrough of running Orcha day to day — setup, dashboard, autonomy, agent collaboration, worker runs and verification.">
+  <!-- INTRO -->
+  <section class="usage-intro">
     <div class="wrap">
-      <p class="badge">Coming soon</p>
       <h1>Usage Guide</h1>
-      <p>
-        A practical guide to running Orcha day to day — registering agents, assigning objectives,
-        reviewing work and verifying results — is being written. Check back shortly.
+      <p class="section-sub">
+        A visual tour of running Orcha day to day — from first-time setup to reviewing and
+        verifying finished work. Each short clip walks through one part of the portal.
       </p>
+    </div>
+  </section>
+
+  <!-- WALKTHROUGHS -->
+  {walkthroughs.map((w, i) => (
+    <section id={w.id} class="walk">
+      <div class="wrap walk-inner">
+        <div class="walk-copy">
+          <p class="walk-num">{String(i + 1).padStart(2, '0')}</p>
+          <h2 class="section-title">{w.title}</h2>
+          <p class="walk-body">{w.body}</p>
+        </div>
+        <figure class="walk-media">
+          <video
+            src={`${base}guide/${w.video}`}
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            aria-label={w.title}
+          ></video>
+        </figure>
+      </div>
+    </section>
+  ))}
+
+  <!-- OUTRO -->
+  <section class="usage-outro">
+    <div class="wrap">
+      <p class="section-sub">Ready to try it on your own project?</p>
       <div class="cta-row">
+        <a class="btn btn-primary" href={`${base}installation`}>Get Orcha</a>
         <a class="btn btn-ghost" href={base}>Back home</a>
       </div>
     </div>
   </section>
 </Base>
+
+<style>
+  .usage-intro { padding-bottom: 16px; }
+  .usage-intro h1 { font-size: clamp(2rem, 5vw, 2.8rem); margin: 0 0 12px; letter-spacing: -0.02em; }
+
+  .walk { padding: 40px 0; border-top: 1px solid var(--line); }
+  .walk-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: 40px;
+    align-items: center;
+  }
+  /* Alternate sides for visual rhythm */
+  .walk:nth-child(even) .walk-copy { order: 2; }
+  .walk:nth-child(even) .walk-media { order: 1; }
+
+  .walk-num {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--cyan);
+    margin: 0 0 10px;
+    letter-spacing: 0.08em;
+  }
+  .walk-body { color: var(--muted); margin: 0; font-size: 1.02rem; line-height: 1.6; }
+  .walk .section-title { margin: 0 0 12px; }
+
+  .walk-media { margin: 0; }
+  .walk-media video {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--deep);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+  }
+
+  .usage-outro { text-align: center; border-top: 1px solid var(--line); }
+  .usage-outro .section-sub { margin: 0 auto 24px; }
+
+  @media (max-width: 760px) {
+    .walk-inner { grid-template-columns: 1fr; gap: 20px; }
+    .walk:nth-child(even) .walk-copy { order: 1; }
+    .walk:nth-child(even) .walk-media { order: 2; }
+  }
+</style>
