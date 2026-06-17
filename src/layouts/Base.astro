@@ -1,0 +1,61 @@
+---
+import '../styles/global.css';
+import { REPO } from '../consts.js';
+
+const { title = 'Orcha', description = 'Human-authoritative multi-agent orchestration as Claude Code slash commands.' } = Astro.props;
+const base = import.meta.env.BASE_URL; // respects astro.config `base`
+const repo = REPO;
+
+const links = [
+  { href: `${base}`, label: 'Home' },
+  { href: `${base}installation`, label: 'Installation Guide' },
+  { href: `${base}usage`, label: 'Usage Guide' },
+  { href: `${base}attribution`, label: 'Open Source' },
+];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#06171c" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={`${base}orca-icon.png`} />
+    <meta name="twitter:card" content="summary" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav" aria-label="Primary">
+        <a class="brand" href={base} aria-label="Orcha home">
+          <img src={`${base}orca-mark.svg`} alt="" width="34" height="34" />
+          <span>Orcha</span>
+        </a>
+        <div class="nav-links">
+          {links.map((l) => <a href={l.href}>{l.label}</a>)}
+          <a class="gh" href={repo} target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap footer-inner">
+        <span>© 2026 Orcha · open source, human-authoritative orchestration</span>
+        <div class="footer-links">
+          <a href={`${base}installation`}>Installation</a>
+          <a href={`${base}usage`}>Usage</a>
+          <a href={`${base}attribution`}>Attribution</a>
+          <a href={repo} target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

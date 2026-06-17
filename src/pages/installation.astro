@@ -1,0 +1,67 @@
+---
+import Base from '../layouts/Base.astro';
+import { REPO, REPO_SSH, MAC_DMG_URL, RELEASE_URL, APP_VERSION } from '../consts.js';
+const base = import.meta.env.BASE_URL;
+---
+<Base title="Installation Guide — Orcha" description="Install Orcha — download the Mac desktop app or set up the CLI from source.">
+  <!-- INTRO -->
+  <section class="install-intro">
+    <div class="wrap">
+      <h1>Installation Guide</h1>
+      <p class="section-sub">
+        Two ways to get Orcha: download the Mac desktop app for the portal experience, or
+        install the command-line tool that powers orchestration inside Claude Code.
+      </p>
+    </div>
+  </section>
+
+  <!-- MAC DESKTOP APP -->
+  <section id="mac">
+    <div class="wrap">
+      <h2 class="section-title">Download for Mac</h2>
+      <p class="section-sub">
+        The Orcha desktop app bundles the portal dashboard in a native window — containers,
+        agents, tasks and a live audit trail, all in one place. Universal build for both Apple
+        Silicon and Intel Macs.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href={MAC_DMG_URL}>Download Orcha {APP_VERSION} (.dmg)</a>
+        <a class="btn btn-ghost" href={RELEASE_URL} target="_blank" rel="noopener">All downloads &amp; release notes ↗</a>
+      </div>
+      <p class="note">
+        <strong>First launch:</strong> the app isn’t signed with an Apple Developer ID yet, so
+        macOS may warn that it’s from an unidentified developer. Right-click the app in your
+        Applications folder → <strong>Open</strong> → <strong>Open</strong>, or clear the
+        quarantine flag from Terminal:
+      </p>
+      <code class="code">xattr -dr com.apple.quarantine /Applications/Orcha.app</code>
+    </div>
+  </section>
+
+  <!-- CLI -->
+  <section id="cli">
+    <div class="wrap">
+      <h2 class="section-title">Install the CLI</h2>
+      <p class="section-sub">
+        The <code class="inline">orcha</code> command-line tool spins up each project’s private
+        Postgres + portal and brings the slash commands into Claude Code. Prerequisites: Docker,
+        Python 3.10+ and Claude Code.
+      </p>
+      <code class="code"><span class="c"># clone and install the CLI from source</span>
+git clone {REPO_SSH}
+cd orcha
+pip install ./orcha-cli
+
+<span class="c"># initialise orchestration inside any project</span>
+orcha init --objective "Ship the thing" --as YourName</code>
+      <p class="note">
+        <strong>Homebrew:</strong> a one-line <code class="inline">brew install</code> tap is on
+        the way and will land here once it’s published. For now, install from source above.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-ghost" href={`${REPO}#installation`} target="_blank" rel="noopener">Full setup on GitHub ↗</a>
+        <a class="btn btn-ghost" href={base}>Back home</a>
+      </div>
+    </div>
+  </section>
+</Base>
