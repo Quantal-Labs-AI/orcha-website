@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { BREW_TAP, BREW_INSTALL } from '../consts.js';
+import { BREW_INSTALL } from '../consts.js';
 const base = import.meta.env.BASE_URL;
 
 const features = [
@@ -112,7 +112,6 @@ const steps = [
         <a href={`${base}installation`}>Installation Guide</a>.
       </p>
       <code class="code"><span class="c"># install the CLI with Homebrew</span>
-brew tap {BREW_TAP}
 {BREW_INSTALL}
 
 <span class="c"># initialise orchestration inside any project</span>
