@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import { REPO } from '../consts.js';
+const base = import.meta.env.BASE_URL;
+---
+<Base title="Installation Guide — Orcha" description="How to install and set up Orcha. Coming soon.">
+  <section class="coming">
+    <div class="wrap">
+      <p class="badge">Coming soon</p>
+      <h1>Installation Guide</h1>
+      <p>
+        A step-by-step install walkthrough — Homebrew tap, direct download, and the desktop app —
+        is on its way. In the meantime you can install from source straight from the repository.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href={`${REPO}#installation`} target="_blank" rel="noopener">Install from source ↗</a>
+        <a class="btn btn-ghost" href={base}>Back home</a>
+      </div>
+    </div>
+  </section>
+</Base>
