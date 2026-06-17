@@ -1,6 +1,5 @@
 ---
 import Base from '../layouts/Base.astro';
-import { REPO } from '../consts.js';
 const base = import.meta.env.BASE_URL;
 ---
 <Base title="Open Source Attribution — Orcha" description="Open source licenses and attribution for Orcha. Coming soon.">
@@ -13,7 +12,6 @@ const base = import.meta.env.BASE_URL;
         acknowledgements that make it possible will be published here.
       </p>
       <div class="cta-row">
-        <a class="btn btn-primary" href={REPO} target="_blank" rel="noopener">Browse the source ↗</a>
         <a class="btn btn-ghost" href={base}>Back home</a>
       </div>
     </div>
