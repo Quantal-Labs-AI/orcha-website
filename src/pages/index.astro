@@ -41,6 +41,7 @@ const steps = [
   { h: 'Initialise a project', p: 'Run orcha init in any project to spin up its private Postgres + portal and register you as the first human.' },
   { h: 'Bring in agents', p: 'Register your AI agents — Claude Code and Codex today, with more on the way — and hand them an objective. They claim tasks and collaborate through the shared database.' },
   { h: 'Stay in control', p: 'Review, reprioritise and verify from the portal or straight from slash commands. Nothing ships without you.' },
+  { h: 'Add an API key', optional: true, p: 'Optional, but worth it: drop in an Anthropic API key so agents can handle the low-lift work themselves — onboarding new agents, memory handoffs between sessions, routine checks. Load about $20 for your Anthropic API usage — trust me, $20 will last you at least a couple of months and save you a ton of tokens.' },
 ];
 ---
 <Base title="Orcha — human-authoritative multi-agent orchestration">
@@ -88,12 +89,12 @@ const steps = [
   <section id="how">
     <div class="wrap">
       <h2 class="section-title">How it works</h2>
-      <p class="section-sub">From zero to an orchestrated team in four steps.</p>
+      <p class="section-sub">From zero to an orchestrated team in four steps — plus one optional extra.</p>
       <div class="steps">
         {steps.map((s, i) => (
-          <div class="step">
+          <div class={s.optional ? 'step step-optional' : 'step'}>
             <div class="num">{i + 1}</div>
-            <h4>{s.h}</h4>
+            <h4>{s.h}{s.optional && <span class="opt">Optional</span>}</h4>
             <p>{s.p}</p>
           </div>
         ))}
