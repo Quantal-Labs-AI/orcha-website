@@ -1,6 +1,5 @@
 ---
 import Base from '../layouts/Base.astro';
-import { REPO } from '../consts.js';
 const base = import.meta.env.BASE_URL;
 ---
 <Base title="Usage Guide — Orcha" description="How to use Orcha day to day. Coming soon.">
@@ -13,7 +12,6 @@ const base = import.meta.env.BASE_URL;
         reviewing work and verifying results — is being written. Check back shortly.
       </p>
       <div class="cta-row">
-        <a class="btn btn-primary" href={`${REPO}#how-it-works-30-second-tour`} target="_blank" rel="noopener">30-second tour ↗</a>
         <a class="btn btn-ghost" href={base}>Back home</a>
       </div>
     </div>
