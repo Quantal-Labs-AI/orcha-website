@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { CF_BEACON_TOKEN } from '../consts.js';
 
 const { title = 'Orcha', description = 'Human-authoritative multi-agent orchestration — Claude Code and Codex agents working together as slash commands, with more AI agents coming.' } = Astro.props;
 const base = import.meta.env.BASE_URL; // respects astro.config `base`
@@ -25,6 +26,15 @@ const links = [
     <meta property="og:type" content="website" />
     <meta property="og:image" content={`${base}orca-icon.png`} />
     <meta name="twitter:card" content="summary" />
+    {/* Cloudflare Web Analytics — privacy-friendly, cookieless, no consent banner.
+        Renders only once CF_BEACON_TOKEN is set in src/consts.js. */}
+    {CF_BEACON_TOKEN && (
+      <script
+        defer
+        src="https://static.cloudflareinsights.com/beacon.min.js"
+        data-cf-beacon={`{"token": "${CF_BEACON_TOKEN}"}`}
+      ></script>
+    )}
   </head>
   <body>
     <header class="site-header">

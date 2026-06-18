@@ -1,0 +1,149 @@
+---
+import Base from '../layouts/Base.astro';
+import { RELEASES_API, CF_DASHBOARD_URL, CF_BEACON_TOKEN, HOMEBREW_TAP_TRAFFIC_URL } from '../consts.js';
+const base = import.meta.env.BASE_URL;
+const analyticsLive = Boolean(CF_BEACON_TOKEN);
+---
+<Base title="Orcha — Stats" description="One place to see how Orcha is doing: site visits, Mac app downloads and CLI installs.">
+  <section class="hero hero-compact">
+    <div class="wrap">
+      <span class="eyebrow">Internal · bookmark this page</span>
+      <h1>Orcha at a glance</h1>
+      <p class="lede">
+        One place for the three numbers that matter — who's visiting the site, how many
+        people downloaded the Mac app, and how many installed the command-line tool.
+        Download numbers update live each time you open this page.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="grid stat-grid">
+        <!-- 1 · Site visits (Cloudflare) -->
+        <div class="card stat-card">
+          <div class="ico">🌊</div>
+          <h3>Site visits</h3>
+          <p class="stat-sub">Privacy-friendly counts from Cloudflare Web Analytics.</p>
+          {analyticsLive ? (
+            <p class="stat-note">
+              Visit tracking is <strong>live</strong>. The actual numbers (visits, page
+              views, top pages, countries) live in your Cloudflare dashboard — they can't be
+              shown on a public page without exposing an account key.
+            </p>
+          ) : (
+            <p class="stat-note">
+              <strong>Not switched on yet.</strong> Add openorcha.io in Cloudflare → Web
+              Analytics, paste the token into <code>src/consts.js</code>, and visit numbers
+              start flowing into the Cloudflare dashboard.
+            </p>
+          )}
+          <a class="btn btn-ghost stat-btn" href={CF_DASHBOARD_URL} target="_blank" rel="noopener">
+            Open Cloudflare dashboard →
+          </a>
+        </div>
+
+        <!-- 2 · Mac app downloads (GitHub Releases) -->
+        <div class="card stat-card">
+          <div class="ico">🍎</div>
+          <h3>Mac app downloads</h3>
+          <p class="stat-sub">Everyone who downloaded the .dmg or .zip desktop app.</p>
+          <p class="stat-number" data-mac-total>—</p>
+          <p class="stat-meta" data-mac-meta>Loading from GitHub…</p>
+        </div>
+
+        <!-- 3 · CLI / Homebrew installs -->
+        <div class="card stat-card">
+          <div class="ico">🍺</div>
+          <h3>CLI installs</h3>
+          <p class="stat-sub">How many people installed the command-line tool via Homebrew.</p>
+          <p class="stat-note">
+            There's <strong>no exact live number</strong> for this: <code>brew install</code>
+            copies the tool's code at a version tag rather than downloading a file, so nothing
+            counts it directly. The closest trend is the tap repo's <strong>Traffic → Clones</strong>
+            (admin-only, last ~14 days, approximate).
+          </p>
+          <a class="btn btn-ghost stat-btn" href={HOMEBREW_TAP_TRAFFIC_URL} target="_blank" rel="noopener">
+            Open tap clone insights →
+          </a>
+        </div>
+      </div>
+
+      <div class="note stat-explainer">
+        <strong>How to read these:</strong> The Mac-app number is exact — it counts real
+        downloads of the .dmg/.zip from GitHub and refreshes each time this page loads. Site
+        visits live in Cloudflare and CLI installs can only be estimated from clone traffic —
+        use the buttons on those two cards. Want a clean, exact CLI-install number too? The
+        Homebrew agent can switch the tool to install from a tracked download link, which would
+        log every install — that's a code change, so it's your call to greenlight, Kedar.
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero-compact { padding-bottom: 8px; }
+  .stat-grid { margin-top: 8px; }
+  .stat-card { display: flex; flex-direction: column; }
+  .stat-sub { color: var(--muted); font-size: 0.95rem; margin: 0 0 14px; }
+  .stat-number {
+    font-family: var(--mono);
+    font-size: clamp(2.2rem, 6vw, 3rem);
+    font-weight: 700;
+    color: var(--cyan);
+    margin: 4px 0 2px;
+    line-height: 1;
+  }
+  .stat-meta { color: var(--muted); font-size: 0.85rem; margin: 0; min-height: 1.2em; }
+  .stat-note { color: var(--muted); font-size: 0.9rem; margin: 0 0 16px; }
+  .stat-note strong { color: var(--foam); }
+  .stat-btn { margin-top: auto; align-self: flex-start; }
+  .stat-explainer { margin-top: 26px; }
+  code {
+    font-family: var(--mono);
+    font-size: 0.88em;
+    background: rgba(31, 199, 205, 0.1);
+    padding: 1px 6px;
+    border-radius: 6px;
+  }
+</style>
+
+<script define:vars={{ RELEASES_API }}>
+  // Live Mac-app download count from the public GitHub Releases API. Only the `v*`
+  // releases carry the downloadable .dmg/.zip; CLI releases install by git clone, so
+  // their download_count is meaningless and is deliberately not shown here.
+  const fmt = (n) => n.toLocaleString('en-US');
+
+  function macTotal(releases) {
+    let total = 0, count = 0;
+    for (const r of releases) {
+      if ((r.tag_name || '').startsWith('cli-')) continue;
+      const assets = r.assets || [];
+      if (!assets.length) continue;
+      total += assets.reduce((s, a) => s + (a.download_count || 0), 0);
+      count++;
+    }
+    return { total, count };
+  }
+
+  function paint(value, meta) {
+    const numEl = document.querySelector('[data-mac-total]');
+    const metaEl = document.querySelector('[data-mac-meta]');
+    if (numEl) numEl.textContent = value;
+    if (metaEl) metaEl.textContent = meta;
+  }
+
+  async function load() {
+    try {
+      const res = await fetch(RELEASES_API, { headers: { Accept: 'application/vnd.github+json' } });
+      if (!res.ok) throw new Error(`GitHub returned ${res.status}`);
+      const releases = await res.json();
+      const { total, count } = macTotal(releases);
+      paint(fmt(total), `Across ${count} release${count === 1 ? '' : 's'} · all-time`);
+    } catch (err) {
+      paint('—', `Couldn't load right now (${err.message}). Try refreshing in a minute.`);
+    }
+  }
+
+  load();
+</script>
