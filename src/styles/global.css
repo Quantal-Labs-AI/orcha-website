@@ -186,6 +186,29 @@ code.inline {
 #cli .cta-row { margin-top: 26px; justify-content: flex-start; }
 #mac .cta-row { justify-content: flex-start; }
 
+/* step badges on the installation headings */
+.badge-req, .badge-opt {
+  font-family: var(--mono);
+  font-size: 0.62em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  vertical-align: middle;
+  padding: 4px 9px;
+  border-radius: 999px;
+  margin-left: 10px;
+  position: relative;
+  top: -2px;
+}
+.badge-req { color: var(--ink); background: var(--cyan); font-weight: 700; }
+.badge-opt { color: var(--muted); background: rgba(111, 224, 228, 0.12); border: 1px solid var(--line); }
+
+/* "install the CLI first" callout — amber so it reads as important, not just a tip */
+.note-prereq {
+  border-left-color: #f4b740;
+  background: rgba(244, 183, 64, 0.07);
+}
+.note-prereq strong { color: #f4b740; }
+
 /* ---------- coming soon ---------- */
 .coming {
   min-height: 64vh;

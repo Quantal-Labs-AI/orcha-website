@@ -9,16 +9,45 @@ const base = import.meta.env.BASE_URL;
     <div class="wrap">
       <h1>Installation Guide</h1>
       <p class="section-sub">
-        Two ways to get Orcha: download the Mac desktop app for the portal experience, or
-        install the command-line tool that powers orchestration inside Claude Code and Codex.
+        Orcha has two parts that work together. <strong>Start with the command-line tool (CLI)</strong> —
+        it’s the engine that powers orchestration inside Claude Code and Codex. Then, if you’d like a
+        desktop dashboard, add the Mac app on top. The Mac app is not standalone: it needs the CLI
+        installed first.
       </p>
     </div>
   </section>
 
-  <!-- MAC DESKTOP APP -->
+  <!-- CLI (STEP 1 — REQUIRED) -->
+  <section id="cli">
+    <div class="wrap">
+      <h2 class="section-title">Step 1 — Install the CLI <span class="badge-req">Required</span></h2>
+      <p class="section-sub">
+        The <code class="inline">orcha</code> command-line tool spins up each project’s private
+        Postgres + portal and brings the slash commands into your AI coding agent. Everyone needs
+        this — including Mac app users. Prerequisites: Docker, Python 3.10+ and an AI coding agent
+        (Claude Code or Codex).
+      </p>
+      <code class="code"><span class="c"># install the CLI with Homebrew</span>
+{BREW_INSTALL}
+
+<span class="c"># initialise orchestration inside any project</span>
+orcha init --objective "Ship the thing" --as YourName</code>
+      <p class="note">
+        <strong>Updating:</strong> already have Orcha? Run
+        <code class="inline">brew upgrade orcha</code> to get the latest CLI.
+      </p>
+    </div>
+  </section>
+
+  <!-- MAC DESKTOP APP (STEP 2 — OPTIONAL) -->
   <section id="mac">
     <div class="wrap">
-      <h2 class="section-title">Download for Mac</h2>
+      <h2 class="section-title">Step 2 — Add the Mac app <span class="badge-opt">Optional</span></h2>
+      <p class="note note-prereq">
+        <strong>Install the CLI first.</strong> The Mac app is not a standalone program — it’s a
+        desktop dashboard for the CLI you installed above. Without the CLI (and Docker) running,
+        the app has nothing to connect to.
+      </p>
       <p class="section-sub">
         The Orcha desktop app bundles the portal dashboard in a native window — containers,
         agents, tasks and a live audit trail, all in one place. Universal build for both Apple
@@ -30,27 +59,6 @@ const base = import.meta.env.BASE_URL;
       <p class="note">
         <strong>Signed &amp; notarized by Apple.</strong> Open the .dmg, drag Orcha into your
         Applications folder and launch it — it opens straight away with no security warnings.
-      </p>
-    </div>
-  </section>
-
-  <!-- CLI -->
-  <section id="cli">
-    <div class="wrap">
-      <h2 class="section-title">Install the CLI</h2>
-      <p class="section-sub">
-        The <code class="inline">orcha</code> command-line tool spins up each project’s private
-        Postgres + portal and brings the slash commands into your AI coding agent. Prerequisites:
-        Docker, Python 3.10+ and an AI coding agent (Claude Code or Codex).
-      </p>
-      <code class="code"><span class="c"># install the CLI with Homebrew</span>
-{BREW_INSTALL}
-
-<span class="c"># initialise orchestration inside any project</span>
-orcha init --objective "Ship the thing" --as YourName</code>
-      <p class="note">
-        <strong>Updating:</strong> already have Orcha? Run
-        <code class="inline">brew upgrade orcha</code> to get the latest CLI.
       </p>
       <div class="cta-row">
         <a class="btn btn-ghost" href={base}>Back home</a>
