@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { RELEASES_API, CF_DASHBOARD_URL, CF_BEACON_TOKEN } from '../consts.js';
+import { RELEASES_API, CF_DASHBOARD_URL, CF_BEACON_TOKEN, HOMEBREW_TAP_TRAFFIC_URL } from '../consts.js';
 const base = import.meta.env.BASE_URL;
 const analyticsLive = Boolean(CF_BEACON_TOKEN);
 ---
@@ -52,22 +52,30 @@ const analyticsLive = Boolean(CF_BEACON_TOKEN);
           <p class="stat-meta" data-mac-meta>Loading from GitHub…</p>
         </div>
 
-        <!-- 3 · CLI / Homebrew installs (GitHub Releases) -->
+        <!-- 3 · CLI / Homebrew installs -->
         <div class="card stat-card">
           <div class="ico">🍺</div>
           <h3>CLI installs</h3>
-          <p class="stat-sub">Downloads of the command-line tool that <code>brew install</code> pulls.</p>
-          <p class="stat-number" data-cli-total>—</p>
-          <p class="stat-meta" data-cli-meta>Loading from GitHub…</p>
+          <p class="stat-sub">How many people installed the command-line tool via Homebrew.</p>
+          <p class="stat-note">
+            There's <strong>no exact live number</strong> for this: <code>brew install</code>
+            copies the tool's code at a version tag rather than downloading a file, so nothing
+            counts it directly. The closest trend is the tap repo's <strong>Traffic → Clones</strong>
+            (admin-only, last ~14 days, approximate).
+          </p>
+          <a class="btn btn-ghost stat-btn" href={HOMEBREW_TAP_TRAFFIC_URL} target="_blank" rel="noopener">
+            Open tap clone insights →
+          </a>
         </div>
       </div>
 
       <div class="note stat-explainer">
-        <strong>How to read these:</strong> Homebrew doesn't publish an install counter for
-        outside taps like ours, so the CLI number counts downloads of the release file that a
-        fresh <code>brew install</code> pulls from GitHub — the closest stand-in we have for
-        "Homebrew installs." Both download numbers come straight from GitHub and refresh every
-        time this page loads. Site visits are kept by Cloudflare; use the button above to see them.
+        <strong>How to read these:</strong> The Mac-app number is exact — it counts real
+        downloads of the .dmg/.zip from GitHub and refreshes each time this page loads. Site
+        visits live in Cloudflare and CLI installs can only be estimated from clone traffic —
+        use the buttons on those two cards. Want a clean, exact CLI-install number too? The
+        Homebrew agent can switch the tool to install from a tracked download link, which would
+        log every install — that's a code change, so it's your call to greenlight, Kedar.
       </div>
     </div>
   </section>
@@ -101,26 +109,26 @@ const analyticsLive = Boolean(CF_BEACON_TOKEN);
 </style>
 
 <script define:vars={{ RELEASES_API }}>
-  // Pull live download counts from the public GitHub Releases API and split them into
-  // Mac-app downloads (the `v*` releases) and CLI downloads (the `cli-v*` releases).
+  // Live Mac-app download count from the public GitHub Releases API. Only the `v*`
+  // releases carry the downloadable .dmg/.zip; CLI releases install by git clone, so
+  // their download_count is meaningless and is deliberately not shown here.
   const fmt = (n) => n.toLocaleString('en-US');
 
-  function classify(releases) {
-    let mac = 0, cli = 0;
-    let macReleases = 0, cliReleases = 0;
+  function macTotal(releases) {
+    let total = 0, count = 0;
     for (const r of releases) {
-      const isCli = (r.tag_name || '').startsWith('cli-');
-      const total = (r.assets || []).reduce((s, a) => s + (a.download_count || 0), 0);
-      if (!(r.assets || []).length) continue;
-      if (isCli) { cli += total; cliReleases++; }
-      else { mac += total; macReleases++; }
+      if ((r.tag_name || '').startsWith('cli-')) continue;
+      const assets = r.assets || [];
+      if (!assets.length) continue;
+      total += assets.reduce((s, a) => s + (a.download_count || 0), 0);
+      count++;
     }
-    return { mac, cli, macReleases, cliReleases };
+    return { total, count };
   }
 
-  function paint(sel, value, meta) {
-    const numEl = document.querySelector(sel.num);
-    const metaEl = document.querySelector(sel.meta);
+  function paint(value, meta) {
+    const numEl = document.querySelector('[data-mac-total]');
+    const metaEl = document.querySelector('[data-mac-meta]');
     if (numEl) numEl.textContent = value;
     if (metaEl) metaEl.textContent = meta;
   }
@@ -130,21 +138,10 @@ const analyticsLive = Boolean(CF_BEACON_TOKEN);
       const res = await fetch(RELEASES_API, { headers: { Accept: 'application/vnd.github+json' } });
       if (!res.ok) throw new Error(`GitHub returned ${res.status}`);
       const releases = await res.json();
-      const { mac, cli, macReleases, cliReleases } = classify(releases);
-      paint(
-        { num: '[data-mac-total]', meta: '[data-mac-meta]' },
-        fmt(mac),
-        `Across ${macReleases} release${macReleases === 1 ? '' : 's'} · all-time`,
-      );
-      paint(
-        { num: '[data-cli-total]', meta: '[data-cli-meta]' },
-        fmt(cli),
-        `Across ${cliReleases} CLI release${cliReleases === 1 ? '' : 's'} · all-time`,
-      );
+      const { total, count } = macTotal(releases);
+      paint(fmt(total), `Across ${count} release${count === 1 ? '' : 's'} · all-time`);
     } catch (err) {
-      const msg = `Couldn't load right now (${err.message}). Try refreshing in a minute.`;
-      paint({ num: '[data-mac-total]', meta: '[data-mac-meta]' }, '—', msg);
-      paint({ num: '[data-cli-total]', meta: '[data-cli-meta]' }, '—', msg);
+      paint('—', `Couldn't load right now (${err.message}). Try refreshing in a minute.`);
     }
   }
 
