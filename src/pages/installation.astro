@@ -17,6 +17,45 @@ const base = import.meta.env.BASE_URL;
     </div>
   </section>
 
+  <!-- PREREQUISITES — HOMEBREW & DOCKER -->
+  <section id="prereqs">
+    <div class="wrap">
+      <h2 class="section-title">Before you begin — Homebrew &amp; Docker</h2>
+      <p class="section-sub">
+        Orcha installs through <strong>Homebrew</strong> (the Mac app store for command-line tools)
+        and runs each project inside <strong>Docker</strong> (which keeps every project’s database
+        and portal neatly isolated). If you already have both, skip ahead to Step 1. Otherwise set
+        them up first — it’s a one-time thing and takes a few minutes each.
+      </p>
+
+      <h3 class="prereq-h">1. Install Homebrew</h3>
+      <p class="section-sub">
+        Open the <strong>Terminal</strong> app (find it with Spotlight — press ⌘&nbsp;Space and type
+        “Terminal”), then paste this line and press Return:
+      </p>
+      <code class="code"><span class="c"># installs Homebrew, the Mac package manager</span>
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code>
+      <p class="note">
+        When it finishes, it may print a couple of “Next steps” lines asking you to run two more
+        commands so your Mac can find <code class="inline">brew</code>. Copy-paste those too — then
+        you’re done.
+      </p>
+
+      <h3 class="prereq-h">2. Install Docker Desktop</h3>
+      <p class="section-sub">
+        With Homebrew in place, install Docker Desktop with one command:
+      </p>
+      <code class="code"><span class="c"># installs Docker Desktop</span>
+brew install --cask docker</code>
+      <p class="note">
+        After it installs, open <strong>Docker Desktop</strong> once from your Applications folder
+        and leave it running in the background — Orcha needs Docker switched on while you work.
+        Prefer a regular installer? You can also download Docker Desktop from
+        <a href="https://www.docker.com/products/docker-desktop/">docker.com</a>.
+      </p>
+    </div>
+  </section>
+
   <!-- CLI (STEP 1 — REQUIRED) -->
   <section id="cli">
     <div class="wrap">
@@ -24,8 +63,8 @@ const base = import.meta.env.BASE_URL;
       <p class="section-sub">
         The <code class="inline">orcha</code> command-line tool spins up each project’s private
         Postgres + portal and brings the slash commands into your AI coding agent. Everyone needs
-        this — including Mac app users. Prerequisites: Docker, Python 3.10+ and an AI coding agent
-        (Claude Code or Codex).
+        this — including Mac app users. You’ll need Homebrew and Docker from the step above, plus
+        Python 3.10+ and an AI coding agent (Claude Code or Codex).
       </p>
       <code class="code"><span class="c"># install the CLI with Homebrew</span>
 {BREW_INSTALL}
