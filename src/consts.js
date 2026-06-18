@@ -22,7 +22,7 @@ export const MAC_ZIP_URL = `${REPO}/releases/download/${RELEASE_TAG}/Orcha-${APP
 // (Cloudflare → Web Analytics → add openorcha.io → copy the token). It is NOT a
 // secret: Cloudflare embeds it in the public page anyway. Until it is filled in
 // the snippet simply does not render, so the site keeps working as-is.
-export const CF_BEACON_TOKEN = '';
+export const CF_BEACON_TOKEN = '874beb3c5c7f4f08be7582312b3ccdd9';
 
 // GitHub Releases API for the code repo — the Stats page reads the live Mac-app
 // download count from here (public, no auth). Mac-app assets (.dmg/.zip) live on
