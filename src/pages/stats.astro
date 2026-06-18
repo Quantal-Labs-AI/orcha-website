@@ -1,0 +1,152 @@
+---
+import Base from '../layouts/Base.astro';
+import { RELEASES_API, CF_DASHBOARD_URL, CF_BEACON_TOKEN } from '../consts.js';
+const base = import.meta.env.BASE_URL;
+const analyticsLive = Boolean(CF_BEACON_TOKEN);
+---
+<Base title="Orcha — Stats" description="One place to see how Orcha is doing: site visits, Mac app downloads and CLI installs.">
+  <section class="hero hero-compact">
+    <div class="wrap">
+      <span class="eyebrow">Internal · bookmark this page</span>
+      <h1>Orcha at a glance</h1>
+      <p class="lede">
+        One place for the three numbers that matter — who's visiting the site, how many
+        people downloaded the Mac app, and how many installed the command-line tool.
+        Download numbers update live each time you open this page.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="grid stat-grid">
+        <!-- 1 · Site visits (Cloudflare) -->
+        <div class="card stat-card">
+          <div class="ico">🌊</div>
+          <h3>Site visits</h3>
+          <p class="stat-sub">Privacy-friendly counts from Cloudflare Web Analytics.</p>
+          {analyticsLive ? (
+            <p class="stat-note">
+              Visit tracking is <strong>live</strong>. The actual numbers (visits, page
+              views, top pages, countries) live in your Cloudflare dashboard — they can't be
+              shown on a public page without exposing an account key.
+            </p>
+          ) : (
+            <p class="stat-note">
+              <strong>Not switched on yet.</strong> Add openorcha.io in Cloudflare → Web
+              Analytics, paste the token into <code>src/consts.js</code>, and visit numbers
+              start flowing into the Cloudflare dashboard.
+            </p>
+          )}
+          <a class="btn btn-ghost stat-btn" href={CF_DASHBOARD_URL} target="_blank" rel="noopener">
+            Open Cloudflare dashboard →
+          </a>
+        </div>
+
+        <!-- 2 · Mac app downloads (GitHub Releases) -->
+        <div class="card stat-card">
+          <div class="ico">🍎</div>
+          <h3>Mac app downloads</h3>
+          <p class="stat-sub">Everyone who downloaded the .dmg or .zip desktop app.</p>
+          <p class="stat-number" data-mac-total>—</p>
+          <p class="stat-meta" data-mac-meta>Loading from GitHub…</p>
+        </div>
+
+        <!-- 3 · CLI / Homebrew installs (GitHub Releases) -->
+        <div class="card stat-card">
+          <div class="ico">🍺</div>
+          <h3>CLI installs</h3>
+          <p class="stat-sub">Downloads of the command-line tool that <code>brew install</code> pulls.</p>
+          <p class="stat-number" data-cli-total>—</p>
+          <p class="stat-meta" data-cli-meta>Loading from GitHub…</p>
+        </div>
+      </div>
+
+      <div class="note stat-explainer">
+        <strong>How to read these:</strong> Homebrew doesn't publish an install counter for
+        outside taps like ours, so the CLI number counts downloads of the release file that a
+        fresh <code>brew install</code> pulls from GitHub — the closest stand-in we have for
+        "Homebrew installs." Both download numbers come straight from GitHub and refresh every
+        time this page loads. Site visits are kept by Cloudflare; use the button above to see them.
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero-compact { padding-bottom: 8px; }
+  .stat-grid { margin-top: 8px; }
+  .stat-card { display: flex; flex-direction: column; }
+  .stat-sub { color: var(--muted); font-size: 0.95rem; margin: 0 0 14px; }
+  .stat-number {
+    font-family: var(--mono);
+    font-size: clamp(2.2rem, 6vw, 3rem);
+    font-weight: 700;
+    color: var(--cyan);
+    margin: 4px 0 2px;
+    line-height: 1;
+  }
+  .stat-meta { color: var(--muted); font-size: 0.85rem; margin: 0; min-height: 1.2em; }
+  .stat-note { color: var(--muted); font-size: 0.9rem; margin: 0 0 16px; }
+  .stat-note strong { color: var(--foam); }
+  .stat-btn { margin-top: auto; align-self: flex-start; }
+  .stat-explainer { margin-top: 26px; }
+  code {
+    font-family: var(--mono);
+    font-size: 0.88em;
+    background: rgba(31, 199, 205, 0.1);
+    padding: 1px 6px;
+    border-radius: 6px;
+  }
+</style>
+
+<script define:vars={{ RELEASES_API }}>
+  // Pull live download counts from the public GitHub Releases API and split them into
+  // Mac-app downloads (the `v*` releases) and CLI downloads (the `cli-v*` releases).
+  const fmt = (n) => n.toLocaleString('en-US');
+
+  function classify(releases) {
+    let mac = 0, cli = 0;
+    let macReleases = 0, cliReleases = 0;
+    for (const r of releases) {
+      const isCli = (r.tag_name || '').startsWith('cli-');
+      const total = (r.assets || []).reduce((s, a) => s + (a.download_count || 0), 0);
+      if (!(r.assets || []).length) continue;
+      if (isCli) { cli += total; cliReleases++; }
+      else { mac += total; macReleases++; }
+    }
+    return { mac, cli, macReleases, cliReleases };
+  }
+
+  function paint(sel, value, meta) {
+    const numEl = document.querySelector(sel.num);
+    const metaEl = document.querySelector(sel.meta);
+    if (numEl) numEl.textContent = value;
+    if (metaEl) metaEl.textContent = meta;
+  }
+
+  async function load() {
+    try {
+      const res = await fetch(RELEASES_API, { headers: { Accept: 'application/vnd.github+json' } });
+      if (!res.ok) throw new Error(`GitHub returned ${res.status}`);
+      const releases = await res.json();
+      const { mac, cli, macReleases, cliReleases } = classify(releases);
+      paint(
+        { num: '[data-mac-total]', meta: '[data-mac-meta]' },
+        fmt(mac),
+        `Across ${macReleases} release${macReleases === 1 ? '' : 's'} · all-time`,
+      );
+      paint(
+        { num: '[data-cli-total]', meta: '[data-cli-meta]' },
+        fmt(cli),
+        `Across ${cliReleases} CLI release${cliReleases === 1 ? '' : 's'} · all-time`,
+      );
+    } catch (err) {
+      const msg = `Couldn't load right now (${err.message}). Try refreshing in a minute.`;
+      paint({ num: '[data-mac-total]', meta: '[data-mac-meta]' }, '—', msg);
+      paint({ num: '[data-cli-total]', meta: '[data-cli-meta]' }, '—', msg);
+    }
+  }
+
+  load();
+</script>
