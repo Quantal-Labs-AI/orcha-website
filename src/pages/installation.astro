@@ -27,6 +27,22 @@ const base = import.meta.env.BASE_URL;
         this — including Mac app users. Prerequisites: Docker, Python 3.10+ and an AI coding agent
         (Claude Code or Codex).
       </p>
+      <h3 class="step-sub">Before you start: Homebrew &amp; Docker</h3>
+      <p class="note">
+        Orcha installs through Homebrew and runs each project’s stack in Docker, so you need both
+        on your Mac first. Skip either step if you already have it.
+      </p>
+      <code class="code"><span class="c"># 1. Install Homebrew (the macOS package manager)</span>
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+<span class="c"># 2. Install Docker Desktop, then open it once so the engine is running</span>
+brew install --cask docker</code>
+      <p class="note">
+        After installing, <strong>launch Docker Desktop and leave it running</strong> — the CLI
+        can’t start a project’s stack unless the Docker engine is up. Already have an engine like
+        Colima or OrbStack? That works too; just make sure it’s running.
+      </p>
+      <h3 class="step-sub">Install the CLI</h3>
       <code class="code"><span class="c"># install the CLI with Homebrew</span>
 {BREW_INSTALL}
 

@@ -186,6 +186,13 @@ code.inline {
 #cli .cta-row { margin-top: 26px; justify-content: flex-start; }
 #mac .cta-row { justify-content: flex-start; }
 
+/* sub-headings within an installation step (e.g. "Before you start", "Install the CLI") */
+.step-sub {
+  font-size: 1.12rem;
+  margin: 30px 0 6px;
+  letter-spacing: -0.01em;
+}
+
 /* step badges on the installation headings */
 .badge-req, .badge-opt {
   font-family: var(--mono);
