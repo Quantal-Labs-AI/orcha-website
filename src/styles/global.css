@@ -186,6 +186,11 @@ code.inline {
 #cli .cta-row { margin-top: 26px; justify-content: flex-start; }
 #mac .cta-row { justify-content: flex-start; }
 
+/* sub-headings for the numbered Homebrew/Docker prerequisite steps */
+.prereq-h { font-size: 1.12rem; margin: 28px 0 10px; letter-spacing: -0.005em; }
+.prereq-h:first-of-type { margin-top: 8px; }
+#prereqs .note a, #mac .note a { color: var(--cyan-soft); text-decoration: underline; text-underline-offset: 2px; }
+
 /* step badges on the installation headings */
 .badge-req, .badge-opt {
   font-family: var(--mono);

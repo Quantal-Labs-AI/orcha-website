@@ -58,7 +58,16 @@ const steps = [
       </p>
       <div class="cta-row">
         <a class="btn btn-primary" href={`${base}installation`}>Get started →</a>
-        <a class="btn btn-ghost" href={`${base}installation#mac`}>Download for Mac</a>
+        {/*
+          Mac app download CTA intentionally hidden from the homepage until the
+          self-bootstrapping desktop app ships (the .dmg that installs Homebrew,
+          Docker and the CLI on its own). Until then the Mac app needs the CLI set
+          up first, so we lead everyone to the Installation Guide instead of
+          offering a download that looks standalone. The Mac app is still listed
+          on the Installation page as the optional Step 2. Restore this button
+          when the bootstrapped app is released:
+          <a class="btn btn-ghost" href={`${base}installation#mac`}>Download for Mac</a>
+        */}
       </div>
     </div>
   </section>
