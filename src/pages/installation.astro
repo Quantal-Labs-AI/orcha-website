@@ -20,15 +20,33 @@ const base = import.meta.env.BASE_URL;
   <!-- PREREQUISITES — HOMEBREW & DOCKER -->
   <section id="prereqs">
     <div class="wrap">
-      <h2 class="section-title">Before you begin — Homebrew &amp; Docker</h2>
+      <h2 class="section-title">Before you begin — Claude CLI, Homebrew &amp; Docker</h2>
       <p class="section-sub">
-        Orcha installs through <strong>Homebrew</strong> (the Mac app store for command-line tools)
-        and runs each project inside <strong>Docker</strong> (which keeps every project’s database
-        and portal neatly isolated). If you already have both, skip ahead to Step 1. Otherwise set
-        them up first — it’s a one-time thing and takes a few minutes each.
+        Orcha works <em>through</em> Claude Code, so the <strong>Claude CLI</strong> needs to be
+        installed and available first. It also installs through <strong>Homebrew</strong> (the Mac
+        app store for command-line tools) and runs each project inside <strong>Docker</strong>
+        (which keeps every project’s database and portal neatly isolated). If you already have all
+        three, skip ahead to Step 1. Otherwise set them up first — it’s a one-time thing and takes a
+        few minutes each.
       </p>
 
-      <h3 class="prereq-h">1. Install Homebrew</h3>
+      <h3 class="prereq-h">1. Install the Claude CLI</h3>
+      <p class="section-sub">
+        Orcha plugs its slash-commands into <strong>Claude Code</strong>, so you need the
+        <code class="inline">claude</code> command installed and working from any folder. Open the
+        <strong>Terminal</strong> app (find it with Spotlight — press ⌘&nbsp;Space and type
+        “Terminal”), then paste this line and press Return:
+      </p>
+      <code class="code"><span class="c"># installs the Claude CLI (Claude Code)</span>
+curl -fsSL https://claude.ai/install.sh | bash</code>
+      <p class="note">
+        Then confirm it’s installed <strong>globally</strong> — meaning it works from any folder, not
+        just one. Open a fresh Terminal window and run <code class="inline">claude --version</code>:
+        if it prints a version number you’re set. (If it instead says “command not found”, close and
+        reopen Terminal and try once more.)
+      </p>
+
+      <h3 class="prereq-h">2. Install Homebrew</h3>
       <p class="section-sub">
         Open the <strong>Terminal</strong> app (find it with Spotlight — press ⌘&nbsp;Space and type
         “Terminal”), then paste this line and press Return:
@@ -41,7 +59,7 @@ const base = import.meta.env.BASE_URL;
         you’re done.
       </p>
 
-      <h3 class="prereq-h">2. Install Docker Desktop</h3>
+      <h3 class="prereq-h">3. Install Docker Desktop</h3>
       <p class="section-sub">
         With Homebrew in place, install Docker Desktop with one command:
       </p>
@@ -63,8 +81,8 @@ brew install --cask docker</code>
       <p class="section-sub">
         The <code class="inline">orcha</code> command-line tool spins up each project’s private
         Postgres + portal and brings the slash commands into your AI coding agent. Everyone needs
-        this — including Mac app users. You’ll need Homebrew and Docker from the step above, plus
-        Python 3.10+ and an AI coding agent (Claude Code or Codex).
+        this — including Mac app users. You’ll need the Claude CLI, Homebrew and Docker from the
+        steps above, plus Python 3.10+.
       </p>
       <code class="code"><span class="c"># install the CLI with Homebrew</span>
 {BREW_INSTALL}
@@ -102,6 +120,49 @@ orcha init --objective "Ship the thing" --as YourName</code>
       <div class="cta-row">
         <a class="btn btn-ghost" href={base}>Back home</a>
       </div>
+    </div>
+  </section>
+
+  <!-- STOPPING / UNINSTALLING -->
+  <section id="uninstall">
+    <div class="wrap">
+      <h2 class="section-title">Stopping or removing Orcha</h2>
+      <p class="section-sub">
+        Want to pause a project, free up your machine, or remove Orcha entirely? Run these from the
+        <strong>Terminal</strong>, in this order — each line undoes a bit more.
+      </p>
+
+      <h3 class="prereq-h">1. Stop a running project</h3>
+      <p class="section-sub">
+        Run this inside the project folder to shut Orcha down and clear that project’s local
+        database and portal:
+      </p>
+      <code class="code"><span class="c"># stops the project and removes its local data</span>
+orcha down -v</code>
+      <p class="note note-prereq">
+        <strong>This erases that project’s Orcha data</strong> (its tasks, agents and history live in
+        the local database the <code class="inline">-v</code> flag wipes). Your own code and files are
+        untouched — but if you just want to pause and come back later, stop here and run
+        <code class="inline">orcha up</code> again when you return, rather than wiping the data.
+      </p>
+
+      <h3 class="prereq-h">2. Uninstall the Orcha CLI</h3>
+      <p class="section-sub">
+        Once nothing is running, remove the command-line tool itself:
+      </p>
+      <code class="code"><span class="c"># removes the orcha command</span>
+brew uninstall orcha</code>
+
+      <h3 class="prereq-h">3. Remove the Orcha tap</h3>
+      <p class="section-sub">
+        Finally, drop the Homebrew “tap” that Orcha installs from, so Homebrew stops tracking it:
+      </p>
+      <code class="code"><span class="c"># removes the Orcha source from Homebrew</span>
+brew untap open-orcha/orcha</code>
+      <p class="note">
+        Changed your mind? You can reinstall any time by following Step&nbsp;1 above —
+        <code class="inline">{BREW_INSTALL}</code>.
+      </p>
     </div>
   </section>
 </Base>
