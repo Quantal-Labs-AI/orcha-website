@@ -42,6 +42,39 @@ const base = import.meta.env.BASE_URL;
         warnings to click through.
       </p>
 
+      <h3 class="prereq-h">Before you open it — three free tools you’ll need first</h3>
+      <p class="section-sub">
+        The Mac app is the easiest way in, but it isn’t fully self-installing yet. It needs three
+        free tools to be present: it <strong>checks</strong> for them and won’t continue until
+        they’re in place — but you install them yourself. Get these first (or let the app prompt you
+        for any you’re missing):
+      </p>
+      <p class="note note-prereq">
+        <strong>1. Homebrew</strong> — the Mac package manager. Get it at
+        <a href="https://brew.sh">brew.sh</a>, or run:
+      </p>
+      <code class="code"><span class="c"># installs Homebrew</span>
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code>
+      <p class="note note-prereq">
+        <strong>2. Docker</strong> — Orcha runs each project in its own isolated container. Install
+        <a href="https://www.docker.com/products/docker-desktop/">Docker&nbsp;Desktop</a> (or
+        OrbStack) and leave it running.
+      </p>
+      <p class="note note-prereq">
+        <strong>3. An AI coding agent</strong> — Claude&nbsp;Code <em>or</em> Codex. Install one
+        directly with a single command, or download it from
+        <a href="https://claude.ai">claude.ai</a> /
+        <a href="https://chatgpt.com/codex">chatgpt.com/codex</a>:
+      </p>
+      <code class="code"><span class="c"># Claude Code</span>
+curl -fsSL https://claude.ai/install.sh | bash
+
+<span class="c"># …or Codex</span>
+curl -fsSL https://chatgpt.com/codex/install.sh | sh</code>
+      <p class="note">
+        After installing one, sign in once when prompted — Orcha uses whichever you have.
+      </p>
+
       <h3 class="prereq-h">What happens when you open it</h3>
       <p class="section-sub">
         The app guides you through a short, four-step setup. You don’t type any commands —
