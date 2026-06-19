@@ -3,123 +3,179 @@ import Base from '../layouts/Base.astro';
 import { BREW_INSTALL, MAC_DMG_URL, APP_VERSION } from '../consts.js';
 const base = import.meta.env.BASE_URL;
 ---
-<Base title="Installation Guide — Orcha" description="Install Orcha — download the Mac desktop app or set up the CLI from source.">
+<Base title="Installation Guide — Orcha" description="Install Orcha on your Mac — the app walks you through setup in one window, no Terminal needed.">
   <!-- INTRO -->
   <section class="install-intro">
     <div class="wrap">
       <h1>Installation Guide</h1>
       <p class="section-sub">
-        Orcha has two parts that work together. <strong>Start with the command-line tool (CLI)</strong> —
-        it’s the engine that powers orchestration inside Claude Code and Codex. Then, if you’d like a
-        desktop dashboard, add the Mac app on top. The Mac app is not standalone: it needs the CLI
-        installed first.
+        The easiest way to get Orcha running is the <strong>Mac app</strong>. Download it, open it,
+        and it walks you through setup in a single window — checking what you need, installing the
+        Orcha helper for you, and creating your first project. No Terminal required.
+      </p>
+      <p class="section-sub">
+        Prefer the command line, or not on a Mac? There’s a
+        <a href="#advanced">Terminal setup</a> further down.
       </p>
     </div>
   </section>
 
-  <!-- PREREQUISITES — HOMEBREW & DOCKER -->
-  <section id="prereqs">
-    <div class="wrap">
-      <h2 class="section-title">Before you begin — Claude CLI, Homebrew &amp; Docker</h2>
-      <p class="section-sub">
-        Orcha works <em>through</em> Claude Code, so the <strong>Claude CLI</strong> needs to be
-        installed and available first. It also installs through <strong>Homebrew</strong> (the Mac
-        app store for command-line tools) and runs each project inside <strong>Docker</strong>
-        (which keeps every project’s database and portal neatly isolated). If you already have all
-        three, skip ahead to Step 1. Otherwise set them up first — it’s a one-time thing and takes a
-        few minutes each.
-      </p>
-
-      <h3 class="prereq-h">1. Install the Claude CLI</h3>
-      <p class="section-sub">
-        Orcha plugs its slash-commands into <strong>Claude Code</strong>, so you need the
-        <code class="inline">claude</code> command installed and working from any folder. Open the
-        <strong>Terminal</strong> app (find it with Spotlight — press ⌘&nbsp;Space and type
-        “Terminal”), then paste this line and press Return:
-      </p>
-      <code class="code"><span class="c"># installs the Claude CLI (Claude Code)</span>
-curl -fsSL https://claude.ai/install.sh | bash</code>
-      <p class="note">
-        Then confirm it’s installed <strong>globally</strong> — meaning it works from any folder, not
-        just one. Open a fresh Terminal window and run <code class="inline">claude --version</code>:
-        if it prints a version number you’re set. (If it instead says “command not found”, close and
-        reopen Terminal and try once more.)
-      </p>
-
-      <h3 class="prereq-h">2. Install Homebrew</h3>
-      <p class="section-sub">
-        Open the <strong>Terminal</strong> app (find it with Spotlight — press ⌘&nbsp;Space and type
-        “Terminal”), then paste this line and press Return:
-      </p>
-      <code class="code"><span class="c"># installs Homebrew, the Mac package manager</span>
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code>
-      <p class="note">
-        When it finishes, it may print a couple of “Next steps” lines asking you to run two more
-        commands so your Mac can find <code class="inline">brew</code>. Copy-paste those too — then
-        you’re done.
-      </p>
-
-      <h3 class="prereq-h">3. Install Docker Desktop</h3>
-      <p class="section-sub">
-        With Homebrew in place, install Docker Desktop with one command:
-      </p>
-      <code class="code"><span class="c"># installs Docker Desktop</span>
-brew install --cask docker</code>
-      <p class="note">
-        After it installs, open <strong>Docker Desktop</strong> once from your Applications folder
-        and leave it running in the background — Orcha needs Docker switched on while you work.
-        Prefer a regular installer? You can also download Docker Desktop from
-        <a href="https://www.docker.com/products/docker-desktop/">docker.com</a>.
-      </p>
-    </div>
-  </section>
-
-  <!-- CLI (STEP 1 — REQUIRED) -->
-  <section id="cli">
-    <div class="wrap">
-      <h2 class="section-title">Step 1 — Install the CLI <span class="badge-req">Required</span></h2>
-      <p class="section-sub">
-        The <code class="inline">orcha</code> command-line tool spins up each project’s private
-        Postgres + portal and brings the slash commands into your AI coding agent. Everyone needs
-        this — including Mac app users. You’ll need the Claude CLI, Homebrew and Docker from the
-        steps above, plus Python 3.10+.
-      </p>
-      <code class="code"><span class="c"># install the CLI with Homebrew</span>
-{BREW_INSTALL}
-
-<span class="c"># initialise orchestration inside any project</span>
-orcha init --objective "Ship the thing" --as YourName</code>
-      <p class="note">
-        <strong>Updating:</strong> already have Orcha? Run
-        <code class="inline">brew upgrade orcha</code> to get the latest CLI.
-      </p>
-    </div>
-  </section>
-
-  <!-- MAC DESKTOP APP (STEP 2 — OPTIONAL) -->
+  <!-- STEP 1 — MAC APP (THE EASY WAY) -->
   <section id="mac">
     <div class="wrap">
-      <h2 class="section-title">Step 2 — Add the Mac app <span class="badge-opt">Optional</span></h2>
-      <p class="note note-prereq">
-        <strong>Install the CLI first.</strong> The Mac app is not a standalone program — it’s a
-        desktop dashboard for the CLI you installed above. Without the CLI (and Docker) running,
-        the app has nothing to connect to.
-      </p>
+      <h2 class="section-title">Get the Mac app <span class="badge-req">Easiest</span></h2>
       <p class="section-sub">
-        The Orcha desktop app bundles the portal dashboard in a native window — containers,
-        agents, tasks and a live audit trail, all in one place. Universal build for both Apple
-        Silicon and Intel Macs.
+        Universal build for both Apple&nbsp;Silicon and Intel Macs. Download it, open the .dmg,
+        and drag Orcha into your Applications folder.
       </p>
+      <!--
+        Version note: the app-first walkthrough below ("no Terminal", in-app setup) describes
+        builds that include the desktop onboarding stepper (open-orcha/orcha PR #21). The first
+        Mac release carrying it is v1.1.0, now published and live — APP_VERSION is set to 1.1.0
+        in consts.js, so the download button and walkthrough are in sync.
+      -->
       <div class="cta-row">
         <a class="btn btn-primary" href={MAC_DMG_URL}>Download Orcha {APP_VERSION} (.dmg)</a>
       </div>
       <p class="note">
-        <strong>Signed &amp; notarized by Apple.</strong> Open the .dmg, drag Orcha into your
-        Applications folder and launch it — it opens straight away with no security warnings.
+        <strong>Signed &amp; notarized by Apple.</strong> It opens straight away — no security
+        warnings to click through.
       </p>
+
+      <h3 class="prereq-h">What happens when you open it</h3>
+      <p class="section-sub">
+        The app guides you through a short, four-step setup. You don’t type any commands —
+        you just click along.
+      </p>
+
+      <div class="steps onboard-steps">
+        <div class="step">
+          <div class="num">1</div>
+          <h4>Setup check</h4>
+          <p>
+            Orcha checks for three free tools and shows you how to get any you’re missing, then a
+            <strong>Re-check</strong> button confirms once they’re in place.
+          </p>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <h4>Pick a folder</h4>
+          <p>Choose an existing project folder, or create a new one — right from the app.</p>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <h4>Name your project</h4>
+          <p>Give the project a name and an objective for your agents to work toward.</p>
+        </div>
+        <div class="step">
+          <div class="num">4</div>
+          <h4>Create</h4>
+          <p>
+            Orcha installs its own helper and sets the project up end-to-end — database, portal and
+            all. When it finishes, you’re ready to bring in agents.
+          </p>
+        </div>
+      </div>
+
+      <h3 class="prereq-h">The three tools the app checks for</h3>
+      <p class="section-sub">
+        These are free and you install them yourself (each has its own installer or sign-in). The
+        app tells you which, if any, you still need and won’t let you continue until all three are
+        ready — so you can do this now or just let the app prompt you.
+      </p>
+
+      <p class="note">
+        <strong>1. Homebrew</strong> — the Mac package manager. Get it at
+        <a href="https://brew.sh">brew.sh</a>.
+      </p>
+      <p class="note">
+        <strong>2. Docker</strong> — Orcha runs each project in its own isolated container. Install
+        <a href="https://www.docker.com/products/docker-desktop/">Docker&nbsp;Desktop</a> (or
+        OrbStack) and leave it running.
+      </p>
+      <p class="note">
+        <strong>3. An AI coding agent</strong> — Claude&nbsp;Code <em>or</em> Codex. Install one with
+        a single command:
+      </p>
+      <code class="code"><span class="c"># Claude Code</span>
+npm install -g @anthropic-ai/claude-code
+
+<span class="c"># …or Codex</span>
+npm install -g @openai/codex</code>
+      <p class="note">
+        After installing one, sign in once when prompted — Orcha uses whichever you have.
+      </p>
+
       <div class="cta-row">
         <a class="btn btn-ghost" href={base}>Back home</a>
       </div>
+    </div>
+  </section>
+
+  <!-- ADVANCED — TERMINAL SETUP (COLLAPSED) -->
+  <section id="advanced">
+    <div class="wrap">
+      <h2 class="section-title">Advanced — set up from the Terminal</h2>
+      <p class="section-sub">
+        Prefer the command line, automating a setup, or not on a Mac? Everything the app does can be
+        done by hand. The Mac app and the CLI are the same engine underneath — the app just runs
+        these steps for you.
+      </p>
+
+      <details class="advanced">
+        <summary>Show the Terminal setup</summary>
+        <div class="advanced-body">
+          <h3 class="prereq-h">1. Install the AI coding agent</h3>
+          <p class="section-sub">
+            Orcha plugs its slash-commands into <strong>Claude&nbsp;Code</strong> (or Codex), so you
+            need one installed and working from any folder. Open the <strong>Terminal</strong> app
+            (⌘&nbsp;Space, type “Terminal”) and run one:
+          </p>
+          <code class="code"><span class="c"># Claude Code</span>
+npm install -g @anthropic-ai/claude-code
+
+<span class="c"># …or Codex</span>
+npm install -g @openai/codex</code>
+          <p class="note">
+            Confirm it works from any folder — open a fresh Terminal window and run
+            <code class="inline">claude --version</code> (or <code class="inline">codex --version</code>).
+          </p>
+
+          <h3 class="prereq-h">2. Install Homebrew</h3>
+          <p class="section-sub">Homebrew is the Mac package manager Orcha installs through:</p>
+          <code class="code"><span class="c"># installs Homebrew</span>
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code>
+          <p class="note">
+            When it finishes it may print a couple of “Next steps” lines so your Mac can find
+            <code class="inline">brew</code> — copy-paste those too.
+          </p>
+
+          <h3 class="prereq-h">3. Install Docker Desktop</h3>
+          <code class="code"><span class="c"># installs Docker Desktop</span>
+brew install --cask docker</code>
+          <p class="note">
+            Open <strong>Docker Desktop</strong> once and leave it running — Orcha needs Docker on
+            while you work. You can also get it from
+            <a href="https://www.docker.com/products/docker-desktop/">docker.com</a>.
+          </p>
+
+          <h3 class="prereq-h">4. Install the Orcha CLI</h3>
+          <p class="section-sub">
+            The <code class="inline">orcha</code> command-line tool spins up each project’s private
+            Postgres + portal and brings the slash commands into your AI coding agent. You’ll also
+            need Python&nbsp;3.10+.
+          </p>
+          <code class="code"><span class="c"># install the CLI with Homebrew</span>
+{BREW_INSTALL}
+
+<span class="c"># initialise orchestration inside any project</span>
+orcha init --objective "Ship the thing" --as YourName</code>
+          <p class="note">
+            <strong>Updating:</strong> already have Orcha? Run
+            <code class="inline">brew upgrade orcha</code> to get the latest CLI.
+          </p>
+        </div>
+      </details>
     </div>
   </section>
 
@@ -181,8 +237,8 @@ brew uninstall orcha</code>
       <code class="code"><span class="c"># removes the Orcha source from Homebrew</span>
 brew untap open-orcha/orcha</code>
       <p class="note">
-        Changed your mind? You can reinstall any time by following Step&nbsp;1 above —
-        <code class="inline">{BREW_INSTALL}</code>.
+        Changed your mind? You can reinstall any time — the Mac app, or
+        <code class="inline">{BREW_INSTALL}</code> from the Terminal.
       </p>
     </div>
   </section>

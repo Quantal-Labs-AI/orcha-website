@@ -214,6 +214,39 @@ code.inline {
 }
 .note-prereq strong { color: #f4b740; }
 
+/* the four in-app onboarding steps shown on the install page */
+.onboard-steps { margin: 8px 0 12px; }
+
+/* collapsed "Advanced — Terminal setup" fallback */
+details.advanced {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255,255,255,0.02);
+  padding: 0 22px;
+}
+details.advanced > summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 18px 0;
+  font-weight: 600;
+  color: var(--foam);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+details.advanced > summary::-webkit-details-marker { display: none; }
+details.advanced > summary::before {
+  content: "+";
+  font-family: var(--mono);
+  color: var(--cyan);
+  font-size: 1.1rem;
+  line-height: 1;
+}
+details.advanced[open] > summary::before { content: "–"; }
+details.advanced > summary:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+.advanced-body { padding-bottom: 18px; }
+#advanced .note a, #advanced .section-sub a { color: var(--cyan-soft); text-decoration: underline; text-underline-offset: 2px; }
+
 /* ---------- coming soon ---------- */
 .coming {
   min-height: 64vh;
