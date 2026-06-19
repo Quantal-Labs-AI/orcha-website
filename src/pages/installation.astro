@@ -179,6 +179,27 @@ orcha init --objective "Ship the thing" --as YourName</code>
     </div>
   </section>
 
+  <!-- RESET TO CLEAN SLATE -->
+  <section id="reset">
+    <div class="wrap">
+      <h2 class="section-title">Resetting a project to a clean slate</h2>
+      <p class="section-sub">
+        If a project’s Orcha workspace gets into a bad state and you want to start completely
+        fresh — without uninstalling anything — run this from the <strong>Terminal</strong>, inside
+        the project folder:
+      </p>
+      <code class="code"><span class="c"># wipes this project’s Orcha workspace and re-initializes it from scratch</span>
+orcha init --force --reset-data</code>
+      <p class="note note-prereq">
+        <strong>This is a destructive command.</strong> It permanently erases the Orcha workspace
+        inside this project — every task, agent and bit of history Orcha was tracking — and rebuilds
+        it empty. <strong>Your own project code and files are not touched</strong>; only Orcha’s own
+        data for this project is wiped. There’s no undo, so only run it when you genuinely want to
+        throw away this project’s Orcha history and begin again.
+      </p>
+    </div>
+  </section>
+
   <!-- STOPPING / UNINSTALLING -->
   <section id="uninstall">
     <div class="wrap">
