@@ -46,6 +46,11 @@ const base = import.meta.env.BASE_URL;
   doi       = {${ZENODO_DOI}},
   url       = {${ZENODO_DOI_URL}}
 }`}</code>
+
+      <p class="cite-contrib">
+        Planning a significant contribution to Orcha? We'd love to credit you — please
+        ask to have your name added to the authors on the DOI when you do.
+      </p>
     </div>
   </section>
 </Base>
@@ -65,4 +70,12 @@ const base = import.meta.env.BASE_URL;
     margin: 22px 0 8px;
   }
   .cite .code { white-space: pre-wrap; word-break: break-word; }
+  .cite-contrib {
+    color: var(--muted);
+    margin: 24px 0 0;
+    padding: 16px 18px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: rgba(31, 199, 205, 0.05);
+  }
 </style>
