@@ -1,5 +1,4 @@
-// Code repo base — used only to build the Mac app download URL below.
-// (No user-facing "GitHub" links anywhere on the site; install is via Homebrew.)
+// Code repo base — used for the Mac app download URL and the public source link.
 export const ORG = 'open-orcha';
 export const REPO_NAME = 'orcha';
 export const REPO = `https://github.com/${ORG}/${REPO_NAME}`;
@@ -7,6 +6,11 @@ export const REPO = `https://github.com/${ORG}/${REPO_NAME}`;
 // Homebrew install (single source of truth for the install pages).
 export const BREW_TAP = 'open-orcha/orcha';
 export const BREW_INSTALL = 'brew install open-orcha/orcha/orcha';
+
+// Zenodo archive — permanent DOI for citing Orcha (matches CITATION.cff in the code repo).
+// This is the "concept" DOI: it always resolves to the latest archived release.
+export const ZENODO_DOI = '10.5281/zenodo.20740087';
+export const ZENODO_DOI_URL = `https://doi.org/${ZENODO_DOI}`;
 
 // Mac desktop app release artifacts (published GitHub Release on the code repo).
 // Bump APP_VERSION here when a new release is cut and the URLs follow automatically.

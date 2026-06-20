@@ -1,19 +1,68 @@
 ---
 import Base from '../layouts/Base.astro';
+import { REPO, ZENODO_DOI, ZENODO_DOI_URL } from '../consts.js';
 const base = import.meta.env.BASE_URL;
 ---
-<Base title="Open Source Attribution — Orcha" description="Open source licenses and attribution for Orcha. Coming soon.">
+<Base title="Open Source Attribution — Orcha" description="Orcha is open source (MIT). Browse the source on GitHub and cite it via its permanent Zenodo DOI.">
   <section class="coming">
     <div class="wrap">
-      <p class="badge">Coming soon</p>
+      <p class="badge">Open source · MIT</p>
       <h1>Open Source Attribution</h1>
       <p>
         Orcha stands on a lot of open source. A full list of the projects, licenses and
-        acknowledgements that make it possible will be published here.
+        acknowledgements that make it possible will be published here. In the meantime, the
+        whole thing is open — take a look around.
       </p>
       <div class="cta-row">
+        <a class="btn btn-primary" href={REPO} target="_blank" rel="noopener">Browse the source ↗</a>
         <a class="btn btn-ghost" href={base}>Back home</a>
       </div>
     </div>
   </section>
+
+  <!-- CITING ORCHA -->
+  <section class="cite">
+    <div class="wrap">
+      <h2>Citing Orcha</h2>
+      <p class="cite-note">
+        Using Orcha in a paper, a talk, or a writeup? That makes our day — thank you. 🙏
+        Here's a ready-made citation, plus a permanent DOI from Zenodo that will always
+        point to Orcha, no matter where it moves.
+      </p>
+
+      <div class="cta-row cite-doi">
+        <a class="btn btn-ghost" href={ZENODO_DOI_URL} target="_blank" rel="noopener">DOI: {ZENODO_DOI} ↗</a>
+      </div>
+
+      <p class="cite-label">Plain citation</p>
+      <code class="code">Haldankar, K. (2026). Orcha: Human-authoritative multi-agent orchestration. Zenodo. {ZENODO_DOI_URL}</code>
+
+      <p class="cite-label">BibTeX</p>
+      <code class="code">{`@software{haldankar_orcha_2026,
+  author    = {Haldankar, Kedar},
+  title     = {Orcha: Human-authoritative multi-agent orchestration},
+  year      = {2026},
+  publisher = {Zenodo},
+  doi       = {${ZENODO_DOI}},
+  url       = {${ZENODO_DOI_URL}}
+}`}</code>
+    </div>
+  </section>
 </Base>
+
+<style>
+  .cite { padding: 0 0 80px; }
+  .cite .wrap { max-width: 720px; }
+  .cite h2 { font-size: clamp(1.5rem, 4vw, 2.1rem); margin: 0 0 14px; }
+  .cite-note { color: var(--muted); margin: 0 0 24px; }
+  .cite-doi { justify-content: flex-start; margin: 0 0 28px; }
+  .cite-label {
+    font-family: var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.75rem;
+    color: var(--cyan);
+    margin: 22px 0 8px;
+  }
+  .cite .code { white-space: pre-wrap; word-break: break-word; }
+</style>
