@@ -120,6 +120,17 @@ const recipe = [
     p: 'When Agent A marks the task done, it moves to needs-verification — your approval gate. Verify it to complete the task, or send it back with feedback to reopen it. That’s the only step that needs you.',
   },
 ];
+
+// The same loop, recorded running in the portal — one short clip per step. The
+// example uses two agents named Coder and Reviewer, plus you (Kedar) at the end.
+const loopSteps = [
+  { video: 'step1-task-assigned.mp4',           h: 'A task is assigned',        p: 'Coder gets a single task. Its Protocol — visible on the task — spells out the review loop it will run on its own.' },
+  { video: 'step2-coder-requests-review.mp4',   h: 'The builder asks for review', p: 'Coder opens the PR and sends Reviewer a task request. That request wakes Reviewer up to do the review.' },
+  { video: 'step3-reviewer-requests-changes.mp4', h: 'The reviewer answers',     p: 'Reviewer checks the PR and answers with changes requested. The answer comes straight back and wakes Coder to address them.' },
+  { video: 'step4-coder-fixes-rerequests.mp4',  h: 'The loop turns',            p: 'Coder pushes fixes and sends a fresh review request — the same hand-off, going round again. No one wired this up; the agents just follow the Protocol.' },
+  { video: 'step5-reviewer-lgtm.mp4',           h: 'A clean review',            p: 'Reviewer re-checks and returns a clean review — no outstanding comments.' },
+  { video: 'step6-handoff-to-human.mp4',        h: 'It lands on you',           p: 'With a clean review, Coder marks the task done. It moves to needs-verification — your approval gate, the one step that needs you.' },
+];
 ---
 <Base title="Usage Guide — Orcha" description="A visual walkthrough of running Orcha day to day — setup, dashboard, autonomy, agent collaboration, worker runs and verification.">
   <!-- INTRO -->
@@ -176,18 +187,6 @@ const recipe = [
           </article>
         ))}
       </div>
-      <figure class="collab-media">
-        <video
-          src={`${base}guide/building-blocks.mp4`}
-          autoplay
-          muted
-          loop
-          playsinline
-          preload="metadata"
-          aria-label="Agents and a human collaborating in a task thread"
-        ></video>
-        <figcaption>Agents and a person working together in a task thread — comments, hand-offs and verification in one place.</figcaption>
-      </figure>
     </div>
   </section>
 
@@ -210,18 +209,31 @@ const recipe = [
           </div>
         ))}
       </div>
-      <figure class="collab-media">
-        <video
-          src={`${base}guide/pr-review-loop.mp4`}
-          autoplay
-          muted
-          loop
-          playsinline
-          preload="metadata"
-          aria-label="A PR and review loop running between two agents via requests"
-        ></video>
-        <figcaption>Requests carry the baton: one agent asks another to review the PR, the answer comes straight back, and the loop turns until it’s clean.</figcaption>
-      </figure>
+      <h3 class="loop-h">See it run, step by step</h3>
+      <p class="section-sub loop-sub">
+        Here’s that exact loop recorded in the portal — two agents named Coder and Reviewer, then
+        you at the end. Each short clip is one step playing out.
+      </p>
+      <div class="loop-gallery">
+        {loopSteps.map((s, i) => (
+          <figure class="loop-clip">
+            <video
+              src={`${base}guide/${s.video}`}
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="metadata"
+              aria-label={s.h}
+            ></video>
+            <figcaption>
+              <span class="loop-num">Step {i + 1}</span>
+              <span class="loop-title">{s.h}</span>
+              <span class="loop-desc">{s.p}</span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
       <p class="recipe-foot">
         Two ways to escalate to you: to hand finished work up for approval, an agent marks its task
         done so it reaches needs-verification — your sign-off gate. If an agent gets stuck mid-loop
@@ -312,6 +324,53 @@ const recipe = [
     letter-spacing: 0.06em;
     color: var(--cyan);
   }
+  .loop-h {
+    margin: 40px 0 6px;
+    font-size: 1.3rem;
+    letter-spacing: -0.01em;
+  }
+  .loop-sub.loop-sub { margin: 0 0 24px; }
+  .loop-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 32px;
+  }
+  .loop-clip { margin: 0; }
+  .loop-clip video {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--deep);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+  }
+  .loop-clip figcaption { margin: 12px 2px 0; }
+  .loop-num {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--cyan);
+    margin-bottom: 5px;
+  }
+  .loop-title {
+    display: block;
+    font-weight: 650;
+    font-size: 1.02rem;
+    margin-bottom: 5px;
+  }
+  .loop-desc {
+    display: block;
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+  @media (max-width: 760px) {
+    .loop-gallery { grid-template-columns: 1fr; gap: 26px; }
+  }
+
   .recipe-foot {
     margin: 28px 0 0;
     color: var(--muted);
