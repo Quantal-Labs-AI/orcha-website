@@ -176,6 +176,18 @@ const recipe = [
           </article>
         ))}
       </div>
+      <figure class="collab-media">
+        <video
+          src={`${base}guide/building-blocks.mp4`}
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          aria-label="Agents and a human collaborating in a task thread"
+        ></video>
+        <figcaption>Agents and a person working together in a task thread — comments, hand-offs and verification in one place.</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -198,6 +210,18 @@ const recipe = [
           </div>
         ))}
       </div>
+      <figure class="collab-media">
+        <video
+          src={`${base}guide/pr-review-loop.mp4`}
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          aria-label="A PR and review loop running between two agents via requests"
+        ></video>
+        <figcaption>Requests carry the baton: one agent asks another to review the PR, the answer comes straight back, and the loop turns until it’s clean.</figcaption>
+      </figure>
       <p class="recipe-foot">
         Two ways to escalate to you: to hand finished work up for approval, an agent marks its task
         done so it reaches needs-verification — your sign-off gate. If an agent gets stuck mid-loop
@@ -252,6 +276,27 @@ const recipe = [
     border-radius: var(--radius);
     background: var(--deep);
     box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+  }
+
+  .collab-media {
+    margin: 36px auto 0;
+    max-width: 920px;
+  }
+  .collab-media video {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--deep);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+  }
+  .collab-media figcaption {
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    text-align: center;
   }
 
   .concepts, .recipe { padding: 48px 0; border-top: 1px solid var(--line); }
