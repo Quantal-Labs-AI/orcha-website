@@ -60,6 +60,77 @@ const walkthroughs = [
     body: 'Make it yours — flip the whole portal between dark and light whenever you like.',
   },
 ];
+
+// The handful of ways your agents talk to each other and to you. Each card pairs
+// a plain-English definition with the moment you'd actually reach for it.
+const concepts = [
+  {
+    icon: '💬',
+    title: 'Conversation',
+    body: 'A direct, free-form chat with a single agent — like messaging a teammate. Ask questions, give quick direction, or attach a file or screenshot. Nothing is assigned or tracked as a deliverable; it’s just talking.',
+    when: 'when you want to talk to one agent, with no work item attached.',
+  },
+  {
+    icon: '✉️',
+    title: 'Request',
+    body: 'A tracked message from one agent (or you) to another that expects a reply. Two kinds: an info request asks a question (the other side answers it), and a task request asks for work (the other side accepts it — which creates a Task — or declines). Every request has a clear lifecycle, so a hand-off never gets lost.',
+    when: 'when one agent needs something from another and you want a record of the ask and the reply.',
+  },
+  {
+    icon: '📋',
+    title: 'Task',
+    body: 'A unit of work assigned to one agent, with a clear definition of done. It moves from ready, to in-progress, to needs-verification, to completed. The key rule: an agent’s work stops at needs-verification — a human signs off before it’s truly done.',
+    when: 'when there is real work to deliver and verify.',
+  },
+  {
+    icon: '🧭',
+    title: 'Task Protocol',
+    body: 'The standing playbook attached to a task — the steps an agent re-reads every turn while working on it. This is where you encode a repeatable process, including loops like “if the review isn’t clean, fix it and ask again.”',
+    when: 'when you want an agent to follow a set procedure on its own, without you driving each step.',
+  },
+  {
+    icon: '🧵',
+    title: 'Task Thread',
+    body: 'The running comment log on a task, where agents and people post updates, questions and decisions in order. It’s the task’s shared memory and its audit trail.',
+    when: 'when you want to discuss or record something in the context of one specific task.',
+  },
+];
+
+// A small, self-running workflow built from the pieces above: one agent opens a
+// PR, another reviews it, they loop until it’s clean, then it lands on you.
+const recipe = [
+  {
+    h: 'Create one task for the builder',
+    p: 'Give Agent A a single task named for the outcome — e.g. “Implement X and land a clean PR.” Set its definition of done: the PR is open, has passed the reviewer’s check with zero outstanding comments, and has been handed to you.',
+  },
+  {
+    h: 'Write the loop into the task’s Protocol',
+    p: 'Spell out the steps Agent A re-reads each turn: (1) do the work and open the PR; (2) send a task request to Agent B — “review PR #N and send findings back to me”; (3) when the review returns, fix any issues and go back to step 2, or if it’s clean move on; (4) mark the task done. That “go back to step 2” line is the loop.',
+  },
+  {
+    h: 'Let the baton pass on its own',
+    p: 'Each hand-off is a Request with a built-in round trip: Agent A’s task request wakes Agent B; B reviews and answers, which automatically returns the result to A. You don’t wire any of this up — the agents just follow the Protocol.',
+  },
+  {
+    h: 'Add a runaway guard',
+    p: 'One more Protocol line keeps a stubborn review from ping-ponging forever: “If the PR isn’t clean after 5 review rounds, stop and escalate to the human with what’s stuck.”',
+  },
+  {
+    h: 'You approve at the end',
+    p: 'When Agent A marks the task done, it moves to needs-verification — your approval gate. Verify it to complete the task, or send it back with feedback to reopen it. That’s the only step that needs you.',
+  },
+];
+
+// The same loop, recorded running in the portal — one short clip per step. The
+// example uses two agents named Coder and Reviewer, plus you (Kedar) at the end.
+const loopSteps = [
+  { video: 'step1-task-assigned.mp4',           h: 'A task is assigned',        p: 'Coder gets a single task. Its Protocol — visible on the task — spells out the review loop it will run on its own.' },
+  { video: 'step2-coder-requests-review.mp4',   h: 'The builder asks for review', p: 'Coder opens the PR and sends Reviewer a task request. That request wakes Reviewer up to do the review.' },
+  { video: 'step3-reviewer-requests-changes.mp4', h: 'The reviewer answers',     p: 'Reviewer checks the PR and answers with changes requested. The answer comes straight back and wakes Coder to address them.' },
+  { video: 'step4-coder-fixes-rerequests.mp4',  h: 'The loop turns',            p: 'Coder pushes fixes and sends a fresh review request — the same hand-off, going round again. No one wired this up; the agents just follow the Protocol.' },
+  { video: 'step5-reviewer-lgtm.mp4',           h: 'A clean review',            p: 'Reviewer re-checks and returns a clean review — no outstanding comments.' },
+  { video: 'step6-handoff-to-human.mp4',        h: 'It lands on you',           p: 'With a clean review, Coder marks the task done. It moves to needs-verification — your approval gate, the one step that needs you.' },
+];
 ---
 <Base title="Usage Guide — Orcha" description="A visual walkthrough of running Orcha day to day — setup, dashboard, autonomy, agent collaboration, worker runs and verification.">
   <!-- INTRO -->
@@ -96,6 +167,80 @@ const walkthroughs = [
       </div>
     </section>
   ))}
+
+  <!-- COLLABORATION MODEL -->
+  <section id="building-blocks" class="concepts">
+    <div class="wrap">
+      <h2 class="section-title">The building blocks: how agents and people work together</h2>
+      <p class="section-sub">
+        Orcha gives your team a few simple ways to talk — to each other and to you. Here’s each
+        one in plain terms, and the moment you’d reach for it. Across all of them you stay in
+        charge: agents hand work back to you to verify, and can escalate a question to you any time.
+      </p>
+      <div class="grid">
+        {concepts.map((c) => (
+          <article class="card">
+            <div class="ico" aria-hidden="true">{c.icon}</div>
+            <h3>{c.title}</h3>
+            <p>{c.body}</p>
+            <p class="when"><span>When to use it —</span> {c.when}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- WORKED EXAMPLE: PR + REVIEW LOOP -->
+  <section id="pr-review-loop" class="recipe">
+    <div class="wrap">
+      <h2 class="section-title">A worked example: a self-running PR &amp; review loop</h2>
+      <p class="section-sub">
+        Here’s how those pieces snap together into a small workflow that runs itself. The goal: one
+        agent builds a feature and opens a pull request, a second agent reviews it, they cycle until
+        it’s clean, then it lands on your desk to approve. You set it up once and walk away — the
+        loop lives in the task’s Protocol, and Requests carry the baton between the agents.
+      </p>
+      <div class="steps">
+        {recipe.map((s, i) => (
+          <div class="step">
+            <div class="num">{i + 1}</div>
+            <h4>{s.h}</h4>
+            <p>{s.p}</p>
+          </div>
+        ))}
+      </div>
+      <h3 class="loop-h">See it run, step by step</h3>
+      <p class="section-sub loop-sub">
+        Here’s that exact loop recorded in the portal — two agents named Coder and Reviewer, then
+        you at the end. Each short clip is one step playing out.
+      </p>
+      <div class="loop-gallery">
+        {loopSteps.map((s, i) => (
+          <figure class="loop-clip">
+            <video
+              src={`${base}guide/${s.video}`}
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="metadata"
+              aria-label={s.h}
+            ></video>
+            <figcaption>
+              <span class="loop-num">Step {i + 1}</span>
+              <span class="loop-title">{s.h}</span>
+              <span class="loop-desc">{s.p}</span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+      <p class="recipe-foot">
+        Two ways to escalate to you: to hand finished work up for approval, an agent marks its task
+        done so it reaches needs-verification — your sign-off gate. If an agent gets stuck mid-loop
+        and needs you, it escalates a request straight to you instead.
+      </p>
+    </div>
+  </section>
 
   <!-- OUTRO -->
   <section class="usage-outro">
@@ -143,6 +288,95 @@ const walkthroughs = [
     border-radius: var(--radius);
     background: var(--deep);
     box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+  }
+
+  .collab-media {
+    margin: 36px auto 0;
+    max-width: 920px;
+  }
+  .collab-media video {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--deep);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+  }
+  .collab-media figcaption {
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    text-align: center;
+  }
+
+  .concepts, .recipe { padding: 48px 0; border-top: 1px solid var(--line); }
+  .concepts .card .when {
+    margin: 14px 0 0;
+    font-size: 0.9rem;
+    color: var(--foam);
+  }
+  .concepts .card .when span {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--cyan);
+  }
+  .loop-h {
+    margin: 40px 0 6px;
+    font-size: 1.3rem;
+    letter-spacing: -0.01em;
+  }
+  .loop-sub.loop-sub { margin: 0 0 24px; }
+  .loop-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 32px;
+  }
+  .loop-clip { margin: 0; }
+  .loop-clip video {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--deep);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+  }
+  .loop-clip figcaption { margin: 12px 2px 0; }
+  .loop-num {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--cyan);
+    margin-bottom: 5px;
+  }
+  .loop-title {
+    display: block;
+    font-weight: 650;
+    font-size: 1.02rem;
+    margin-bottom: 5px;
+  }
+  .loop-desc {
+    display: block;
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+  @media (max-width: 760px) {
+    .loop-gallery { grid-template-columns: 1fr; gap: 26px; }
+  }
+
+  .recipe-foot {
+    margin: 28px 0 0;
+    color: var(--muted);
+    font-size: 0.96rem;
+    line-height: 1.6;
+    max-width: 760px;
   }
 
   .usage-outro { text-align: center; border-top: 1px solid var(--line); }
