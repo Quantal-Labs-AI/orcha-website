@@ -162,6 +162,7 @@ cd ~/projects/your-project
 
 <span class="c"># set up Orcha for this project and register yourself as the first human</span>
 orcha init --objective "Ship the thing" --as YourName</code>
+      {/* TODO(#258): init only defaults to native and installs the login service from plan PR 10; until then it defaults to Docker */}
       <p class="note">
         <strong>That’s the whole setup.</strong> <code class="inline">orcha init</code> starts the
         Orcha portal at <code class="inline">http://localhost:&lt;port&gt;</code> — it prints the exact
@@ -171,7 +172,7 @@ orcha init --objective "Ship the thing" --as YourName</code>
 
       <h3 class="prereq-h">Handy commands</h3>
       <p class="section-sub">Run these inside your project folder.</p>
-      {/* TODO(#258): command names pending Ethan's orcha serve work (plan PR 6/10) */}
+      {/* TODO(#258): orcha status/logs/down/up confirmed (plan PR 6); orcha doctor (R4) and orcha backup (S7) are not built yet */}
       <table class="cmd-table">
         <thead>
           <tr><th>Command</th><th>What it does</th></tr>
