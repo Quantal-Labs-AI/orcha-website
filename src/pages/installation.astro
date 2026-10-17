@@ -4,7 +4,8 @@ import { BREW_INSTALL, BREW_TAP, MAC_DMG_URL, APP_VERSION } from '../consts.js';
 const base = import.meta.env.BASE_URL;
 ---
 <Base title="Installation Guide — Orcha" description="Install Orcha on your Mac — no Docker, no database to set up. Orcha runs quietly in the background and keeps your project's data in one file.">
-  {/* TODO(#258): DRAFT — this page describes the upcoming no-Docker release. Do not merge to main (main deploys straight to openorcha.io) until that release ships. */}
+  {/* TODO(#258): DRAFT — do not merge to main (which deploys straight to openorcha.io)
+      until the signed no-Docker Mac artifact and matching no-Docker CLI/Homebrew release are public. */}
   <!-- INTRO -->
   <section class="install-intro">
     <div class="wrap">
@@ -59,7 +60,6 @@ const base = import.meta.env.BASE_URL;
         <strong>Signed &amp; notarized by Apple.</strong> It opens straight away — no security
         warnings to click through.
       </p>
-      {/* TODO(#258): bundled runtime ships with plan PR 16 (desktop sidecar) */}
       <p class="note">
         <strong>Everything Orcha needs is built in.</strong> The app carries its own copy of the
         Orcha engine, so there’s nothing else to install first.
@@ -137,6 +137,7 @@ orcha --version</code>
   <section id="brew">
     <div class="wrap">
       <h2 class="section-title">Option C — Homebrew <span class="badge-opt">Still supported</span></h2>
+      {/* TODO(#258): publish the no-Docker CLI tag and update the tap formula before this page goes live. */}
       <p class="section-sub">
         Already use <a href="https://brew.sh">Homebrew</a>? Orcha installs from it just like before:
       </p>
@@ -162,7 +163,6 @@ cd ~/projects/your-project
 
 <span class="c"># set up Orcha for this project and register yourself as the first human</span>
 orcha init --objective "Ship the thing" --as YourName</code>
-      {/* TODO(#258): init only defaults to native and installs the login service from plan PR 10; until then it defaults to Docker */}
       <p class="note">
         <strong>That’s the whole setup.</strong> <code class="inline">orcha init</code> starts the
         Orcha portal at <code class="inline">http://localhost:&lt;port&gt;</code> — it prints the exact
@@ -172,7 +172,6 @@ orcha init --objective "Ship the thing" --as YourName</code>
 
       <h3 class="prereq-h">Handy commands</h3>
       <p class="section-sub">Run these inside your project folder.</p>
-      {/* TODO(#258): orcha status/logs/down/up confirmed (plan PR 6); orcha doctor (R4) and orcha backup (S7) are not built yet */}
       <table class="cmd-table">
         <thead>
           <tr><th>Command</th><th>What it does</th></tr>
@@ -211,7 +210,6 @@ orcha init --objective "Ship the thing" --as YourName</code>
         Bring your existing project across with one command, run once inside the project folder.
         Docker needs to be running this one time, so Orcha can copy your data out of it.
       </p>
-      {/* TODO(#258): orcha migrate-runtime is plan PR 8 */}
       <code class="code"><span class="c"># move this project off Docker (one time)</span>
 orcha migrate-runtime</code>
       <p class="note">
@@ -272,7 +270,6 @@ orcha down</code>
       <p class="section-sub">
         Stops Orcha from starting up again for this project when you log in:
       </p>
-      {/* TODO(#258): orcha service uninstall is plan PR 10 (cli_service.py) */}
       <code class="code"><span class="c"># removes this project’s background login service</span>
 orcha service uninstall</code>
 
