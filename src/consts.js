@@ -14,11 +14,13 @@ export const ZENODO_DOI_URL = `https://doi.org/${ZENODO_DOI}`;
 
 // Mac desktop app release artifacts (published GitHub Release on the code repo).
 // Bump APP_VERSION here when a new release is cut and the URLs follow automatically.
-export const APP_VERSION = '1.1.1';
+// Since 1.2.1 the app ships as an Apple Silicon (arm64) build named Embodent-<v>-arm64
+// (no universal/Intel build); 1.1.1 and earlier were Orcha-<v>-universal.
+export const APP_VERSION = '1.2.1';
 export const RELEASE_TAG = `v${APP_VERSION}`;
 export const RELEASE_URL = `${REPO}/releases/tag/${RELEASE_TAG}`;
-export const MAC_DMG_URL = `${REPO}/releases/download/${RELEASE_TAG}/Orcha-${APP_VERSION}-universal.dmg`;
-export const MAC_ZIP_URL = `${REPO}/releases/download/${RELEASE_TAG}/Orcha-${APP_VERSION}-universal-mac.zip`;
+export const MAC_DMG_URL = `${REPO}/releases/download/${RELEASE_TAG}/Embodent-${APP_VERSION}-arm64.dmg`;
+export const MAC_ZIP_URL = `${REPO}/releases/download/${RELEASE_TAG}/Embodent-${APP_VERSION}-arm64-mac.zip`;
 
 // ── Analytics ────────────────────────────────────────────────────────────────
 // Cloudflare Web Analytics beacon token. Privacy-friendly, cookieless, free —
