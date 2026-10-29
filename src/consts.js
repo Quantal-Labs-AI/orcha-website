@@ -16,7 +16,7 @@ export const ZENODO_DOI_URL = `https://doi.org/${ZENODO_DOI}`;
 // Bump APP_VERSION here when a new release is cut and the URLs follow automatically.
 // Since 1.2.1 the app ships as an Apple Silicon (arm64) build named Embodent-<v>-arm64
 // (no universal/Intel build); 1.1.1 and earlier were Orcha-<v>-universal.
-export const APP_VERSION = '2.0.0';
+export const APP_VERSION = '2.1.0';
 export const RELEASE_TAG = `v${APP_VERSION}`;
 export const RELEASE_URL = `${REPO}/releases/tag/${RELEASE_TAG}`;
 export const MAC_DMG_URL = `${REPO}/releases/download/${RELEASE_TAG}/Embodent-${APP_VERSION}-arm64.dmg`;
