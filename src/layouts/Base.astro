@@ -1,67 +1,85 @@
 ---
 import '../styles/global.css';
-import { CF_BEACON_TOKEN } from '../consts.js';
-
-const { title = 'Orcha', description = 'Human-authoritative multi-agent orchestration — Claude Code and Codex agents working together as slash commands, with more AI agents coming.' } = Astro.props;
-const base = import.meta.env.BASE_URL; // respects astro.config `base`
-
-const links = [
-  { href: `${base}`, label: 'Home' },
-  { href: `${base}installation`, label: 'Installation Guide' },
-  { href: `${base}usage`, label: 'Usage Guide' },
-  { href: `${base}attribution`, label: 'Open Source' },
-];
+import { CF_BEACON_TOKEN, REPO } from '../consts.js';
+const { title = 'Embodent', description = 'Your AI team, with you in charge.' } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const socialImage = new URL(`${base}brand/social-preview.png`, Astro.site);
+const links = [['installation', 'Installation'], ['usage', 'Usage'], ['attribution', 'Open source']];
 ---
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#06171c" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href={`${base}brand/favicon.svg`} />
+    <link rel="icon" type="image/png" sizes="32x32" href={`${base}brand/favicon-32.png`} />
+    <link rel="apple-touch-icon" href={`${base}brand/apple-touch-icon.png`} />
+    <meta name="theme-color" content="#0E0F10" />
+    <meta property="og:site_name" content="Embodent" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content={`${base}orca-icon.png`} />
-    <meta name="twitter:card" content="summary" />
-    {/* Cloudflare Web Analytics — privacy-friendly, cookieless, no consent banner.
-        Renders only once CF_BEACON_TOKEN is set in src/consts.js. */}
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Embodent — Your AI team, with you in charge. Orcha is now Embodent (Embodied Agent)." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline>
+      (() => {
+        let preference = 'dark';
+        try { preference = localStorage.getItem('embodent-site:appearance') || 'dark'; } catch {}
+        if (!['dark', 'light', 'auto'].includes(preference)) preference = 'dark';
+        const theme = preference === 'auto'
+          ? (matchMedia('(prefers-color-scheme:light)').matches ? 'light' : 'dark') : preference;
+        document.documentElement.dataset.appearance = preference;
+        document.documentElement.dataset.theme = theme;
+        document.querySelector('meta[name="theme-color"]').content = theme === 'light' ? '#F4F4F5' : '#0E0F10';
+      })();
+    </script>
     {CF_BEACON_TOKEN && (
-      <script
-        defer
-        src="https://static.cloudflareinsights.com/beacon.min.js"
-        data-cf-beacon={`{"token": "${CF_BEACON_TOKEN}"}`}
-      ></script>
+      <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js"
+        data-cf-beacon={JSON.stringify({ token: CF_BEACON_TOKEN })}></script>
     )}
   </head>
   <body>
+    <a class="skip" href="#main">Skip to content</a>
     <header class="site-header">
-      <nav class="nav" aria-label="Primary">
-        <a class="brand" href={base} aria-label="Orcha home">
-          <img src={`${base}orca-mark.svg`} alt="" width="34" height="34" />
-          <span>Orcha</span>
+      <div class="wrap header-inner">
+        <a class="brand" href={base} aria-label="Embodent home">
+          <svg aria-hidden="true" viewBox="-720 -663 1326 1326">
+            <path d="M390 -504 L0 -504 A504 504 0 0 0 0 504 L390 504 M0 0 L330 0" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="204" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M390 -354 L0 -354 A354 354 0 0 0 0 354 L390 354 M0 0 L330 0" fill="none" stroke="currentColor" stroke-width="204" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span>Embodent</span>
         </a>
-        <div class="nav-links">
-          {links.map((l) => <a href={l.href}>{l.label}</a>)}
-        </div>
-      </nav>
+        <button class="button menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+        <nav class="site-nav" id="site-nav" aria-label="Primary">
+          {links.map(([route, label]) => (
+            <a href={`${base}${route}`} aria-current={Astro.url.pathname.replace(/\/$/, '') === `${base}${route}` ? 'page' : undefined}>{label}</a>
+          ))}
+          <label class="appearance enhanced-only">Appearance
+            <span class="appearance-select"><select id="appearance"><option value="dark">Dark</option><option value="light">Light</option><option value="auto">System</option></select></span>
+          </label>
+        </nav>
+      </div>
     </header>
-
-    <main>
-      <slot />
-    </main>
-
+    <main id="main" tabindex="-1"><slot /></main>
     <footer class="site-footer">
       <div class="wrap footer-inner">
-        <span>© 2026 Kedar Haldankar · Open source, human-authoritative AI orchestration</span>
-        <div class="footer-links">
-          <a href={`${base}installation`}>Installation</a>
-          <a href={`${base}usage`}>Usage</a>
-          <a href={`${base}attribution`}>Attribution</a>
-        </div>
+        <div><p class="footer-name">Embodent</p><p>Orcha is now Embodent (Embodied Agent).</p><p>© 2026 Kedar Haldankar</p></div>
+        <nav class="footer-links" aria-label="Footer">
+          {links.map(([route, label]) => <a href={`${base}${route}`}>{label}</a>)}
+          <a href={REPO}>GitHub</a>
+        </nav>
       </div>
     </footer>
+    <script>
+      import '../scripts/site.js';
+    </script>
   </body>
 </html>

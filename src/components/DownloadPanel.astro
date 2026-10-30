@@ -1,0 +1,19 @@
+---
+import { APP_VERSION, MAC_DMG_URL, MAC_DOWNLOAD_AVAILABLE, RELEASE_URL, REPO } from '../consts.js';
+const { available = MAC_DOWNLOAD_AVAILABLE } = Astro.props;
+---
+<div class="download-panel">
+  {available ? <>
+    <p class="download-title">Embodent for Mac</p>
+    <p class="muted">Apple Silicon · Version {APP_VERSION}</p>
+    <div class="actions">
+      <a class="button primary" href={MAC_DMG_URL}>Download for Mac</a>
+      <a class="button" href={RELEASE_URL}>Release notes</a>
+    </div>
+    <p class="small muted">DMG download. No Intel build is available in this release.</p>
+  </> : <>
+    <p class="download-title">The Mac download is unavailable</p>
+    <p>Check the release page for the latest available files.</p>
+    <div class="actions"><a class="button" href={`${REPO}/releases`}>View releases</a></div>
+  </>}
+</div>
