@@ -3,10 +3,6 @@ export const ORG = 'open-orcha';
 export const REPO_NAME = 'orcha';
 export const REPO = `https://github.com/${ORG}/${REPO_NAME}`;
 
-// Homebrew install (single source of truth for the install pages).
-export const BREW_TAP = 'open-orcha/orcha';
-export const BREW_INSTALL = 'brew install open-orcha/orcha/orcha';
-
 // Zenodo archive — permanent DOI for citing Orcha (matches CITATION.cff in the code repo).
 // This is the "concept" DOI: it always resolves to the latest archived release.
 export const ZENODO_DOI = '10.5281/zenodo.20740087';
@@ -34,11 +30,9 @@ export const CF_BEACON_TOKEN = '874beb3c5c7f4f08be7582312b3ccdd9';
 // download count from here (public, no auth). Mac-app assets (.dmg/.zip) live on
 // the `v*` releases and ARE downloaded as files, so their download_count is real.
 export const RELEASES_API = `https://api.github.com/repos/${ORG}/${REPO_NAME}/releases?per_page=30`;
-// Where to watch site-visit numbers (Cloudflare keeps these; they can't be shown
-// on a public page without exposing an account API token).
-export const CF_DASHBOARD_URL = 'https://dash.cloudflare.com/?to=/:account/web-analytics';
-// CLI installs can't be counted live: `brew install` clones the tap repo at a git
-// tag, it does NOT download a release file, so release download_count stays 0 no
-// matter how many people install (per HomebrewAgent). The closest available signal
-// is the tap repo's Traffic → Clones (admin-only, ~14-day rolling, approximate).
-export const HOMEBREW_TAP_TRAFFIC_URL = `https://github.com/${ORG}/homebrew-orcha/graphs/traffic`;
+
+// Release maintainers can disable the download at build time if the asset is withdrawn.
+// No client-side GitHub availability probe runs on the installation page.
+export const MAC_DOWNLOAD_AVAILABLE = true;
+export const TERMINAL_GUIDE_URL = `${REPO}/blob/${RELEASE_TAG}/README.md#option-2--the-command-line-with-uv-macos`;
+export const LIFECYCLE_GUIDE_URL = `${REPO}/blob/${RELEASE_TAG}/README.md#lifecycle`;

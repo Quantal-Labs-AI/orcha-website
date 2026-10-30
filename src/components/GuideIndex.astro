@@ -1,0 +1,4 @@
+---
+const { links } = Astro.props;
+---
+<div>{links.map(([id, title]) => <a href={`#${id}`}>{title}</a>)}</div>

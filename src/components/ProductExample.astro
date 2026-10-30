@@ -1,0 +1,61 @@
+---
+const { inGuide = false } = Astro.props;
+const Title = inGuide ? 'h3' : 'h2';
+const DecisionTitle = inGuide ? 'h4' : 'h3';
+---
+<figure class="product-figure">
+<div class="product-frame">
+<div class="product-top">
+<span>Studio / Workflows</span>
+<span>Example project</span>
+</div>
+<div class="product-body">
+<Title class="product-title">Launch a workshop booking page</Title>
+<p class="objective">Help people find a class and reserve their place.</p>
+<ul class="task-list">
+<li class="task-row">
+<span class="status-dot attention" aria-hidden="true">
+</span>
+<div>
+<strong>Plan the page</strong>
+<span class="owner">Designer</span>
+</div>
+<span class="state warning">Needs approval</span>
+</li>
+<li class="task-row">
+<span class="status-dot waiting" aria-hidden="true">
+</span>
+<div>
+<strong>Build the booking page</strong>
+<span class="owner">Builder</span>
+</div>
+<span class="state">Waiting</span>
+</li>
+<li class="task-row">
+<span class="status-dot waiting" aria-hidden="true">
+</span>
+<div>
+<strong>Review the experience</strong>
+<span class="owner">Reviewer</span>
+</div>
+<span class="state">Waiting</span>
+</li>
+</ul>
+<div class="decision">
+<div class="small">Your decision</div>
+<DecisionTitle class="decision-title">The page plan is ready</DecisionTitle>
+<p>Review the proposed layout before the designer continues. The next task waits for this work to be accepted.</p>
+<p class="authority">Autonomy OFF · Plan approval required</p>
+</div>
+<div class="team" aria-label="Example agents">
+<div class="person">
+<span class="avatar" aria-hidden="true">D</span>Designer</div>
+<div class="person">
+<span class="avatar" aria-hidden="true">B</span>Builder</div>
+<div class="person">
+<span class="avatar" aria-hidden="true">R</span>Reviewer</div>
+</div>
+</div>
+</div>
+<figcaption>Illustrative product example. A shared objective, three agents and a plan waiting for you.</figcaption>
+</figure>

@@ -1,130 +1,74 @@
 ---
 import Base from '../layouts/Base.astro';
-import { BREW_INSTALL } from '../consts.js';
-const base = import.meta.env.BASE_URL;
-
-const features = [
-  {
-    icon: '⚓',
-    title: 'Human-authoritative',
-    body: 'You hold standing authority over every subtask — approve, reprioritise, reassign, arbitrate. Agents never self-certify their own work.',
-  },
-  {
-    icon: '🪸',
-    title: 'Claude Code and Codex, side by side',
-    body: 'Mix agents from different tools on the same objective — Claude Code and Codex agents collaborate through a shared database instead of stepping on each other. More AI agents are coming.',
-  },
-  {
-    icon: '⌘',
-    title: 'Just slash commands',
-    body: 'Orchestration lives where you already work. /orcha-status, /orcha-next, /orcha-ask and more appear automatically inside both Claude Code and Codex.',
-  },
-  {
-    icon: '🐳',
-    title: 'One isolated stack per project',
-    body: 'Each project gets its own Docker stack: a Postgres database and a FastAPI portal on free ports. No shared state, no surprises.',
-  },
-  {
-    icon: '🔭',
-    title: 'Live portal dashboard',
-    body: 'A read-only web dashboard shows containers, agents, tasks, requests and an audit trail — with a live terminal view.',
-  },
-  {
-    icon: '🧭',
-    title: 'Traceable & accountable',
-    body: 'Every task, request and decision is recorded. Work stops at needs-verification until a human signs off.',
-  },
-];
-
-const steps = [
-  { h: 'Install once', p: 'Install the tiny orcha CLI a single time on your machine.' },
-  { h: 'Initialise a project', p: 'Run orcha init in any project to spin up its private Postgres + portal and register you as the first human.' },
-  { h: 'Bring in agents', p: 'Register your AI agents — Claude Code and Codex today, with more on the way — and hand them an objective. They claim tasks and collaborate through the shared database.' },
-  { h: 'Stay in control', p: 'Review, reprioritise and verify from the portal or straight from slash commands. Nothing ships without you.' },
-  { h: 'Add an API key', optional: true, p: 'Optional, but worth it: drop in an Anthropic API key so agents can handle the low-lift work themselves — onboarding new agents, memory handoffs between sessions, routine checks. Load about $20 for your Anthropic API usage — trust me, $20 will last you at least a couple of months and save you a ton of tokens.' },
-];
+import ProductExample from '../components/ProductExample.astro';
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 ---
-<Base title="Orcha — human-authoritative multi-agent orchestration">
-  <!-- HERO -->
-  <section class="hero">
-    <div class="wrap">
-      <img class="mark" src={`${base}orca-mark.svg`} alt="Orcha logo" width="96" height="96" />
-      <span class="eyebrow">Open source · Claude Code and Codex native</span>
-      <h1>Orchestrate many AI agents,<br /><span class="accent">stay the human in charge.</span></h1>
-      <p class="lede">
-        Orcha lets Claude Code and Codex agents work together on one objective through a shared
-        database — while you keep standing authority over every decision. Multi-agent
-        orchestration, delivered as slash commands, with more AI agents coming.
-      </p>
-      <div class="cta-row">
-        <a class="btn btn-primary" href={`${base}installation`}>Get started →</a>
-        {/*
-          Mac app download CTA intentionally hidden from the homepage until the
-          self-bootstrapping desktop app ships (the .dmg that installs Homebrew,
-          Docker and the CLI on its own). Until then the Mac app needs the CLI set
-          up first, so we lead everyone to the Installation Guide instead of
-          offering a download that looks standalone. The Mac app is still listed
-          on the Installation page as the optional Step 2. Restore this button
-          when the bootstrapped app is released:
-          <a class="btn btn-ghost" href={`${base}installation#mac`}>Download for Mac</a>
-        */}
-      </div>
-    </div>
-  </section>
-
-  <!-- WHAT IS ORCHA -->
-  <section id="what">
-    <div class="wrap">
-      <h2 class="section-title">What is Orcha?</h2>
-      <p class="section-sub">
-        Orcha is a human-authoritative multi-agent orchestration platform. Instead of trusting a
-        single agent to run unsupervised, you direct a team of AI agents — Claude Code and Codex
-        today, with more on the way — that share one workspace and answer to you. The result is
-        parallel progress you can actually trust.
-      </p>
-      <div class="grid">
-        {features.map((f) => (
-          <article class="card">
-            <div class="ico" aria-hidden="true">{f.icon}</div>
-            <h3>{f.title}</h3>
-            <p>{f.body}</p>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- HOW IT WORKS -->
-  <section id="how">
-    <div class="wrap">
-      <h2 class="section-title">How it works</h2>
-      <p class="section-sub">From zero to an orchestrated team in four steps — plus one optional extra.</p>
-      <div class="steps">
-        {steps.map((s, i) => (
-          <div class={s.optional ? 'step step-optional' : 'step'}>
-            <div class="num">{i + 1}</div>
-            <h4>{s.h}{s.optional && <span class="opt">Optional</span>}</h4>
-            <p>{s.p}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- QUICK START -->
-  <section id="quickstart">
-    <div class="wrap">
-      <h2 class="section-title">Quick start</h2>
-      <p class="section-sub">
-        Docker, Python 3.10+ and an AI coding agent (Claude Code or Codex) are the only
-        prerequisites. Full setup lives in the
-        <a href={`${base}installation`}>Installation Guide</a>.
-      </p>
-      <code class="code"><span class="c"># install the CLI with Homebrew</span>
-{BREW_INSTALL}
-
-<span class="c"># initialise orchestration inside any project</span>
-orcha init --objective "Ship the thing" --as YourName</code>
-    </div>
-  </section>
+<Base title="Embodent — Your AI team, with you in charge" description="Bring Claude Code and Codex agents together around a shared objective. Follow their work, answer questions, and review results in one place.">
+<div class="wrap hero">
+<div class="hero-copy">
+<p class="announcement">Orcha is now Embodent (Embodied Agent).</p>
+<h1>Your AI team,<br>with you in charge.</h1>
+<p class="intro">Bring Claude Code and Codex agents together around a shared objective. Follow their work, answer questions, and review results in one place.</p>
+<div class="actions">
+<a class="button primary" href={`${base}installation`}>Get started</a>
+<a class="button" href="#how-it-works">See how it works</a>
+</div>
+<p class="platform">Mac app for Apple Silicon · Runs on your computer</p>
+</div>
+<ProductExample />
+</div>
+<span class="legacy-anchor" id="how" aria-hidden="true"></span>
+<section class="section" id="how-it-works">
+<div class="wrap">
+<div class="section-lead">
+<h2>A shared goal.<br>A clear next step.</h2>
+<p>Turn an objective into work your agents can follow. Keep the plan, the conversation and the result together.</p>
+</div>
+<ol class="process">
+<li>
+<h3>Describe the outcome</h3>
+<p>Create a workflow, add tasks and choose an agent for each one. Set the order and what “done” means.</p>
+</li>
+<li>
+<h3>Let the team work</h3>
+<p>Agents share updates and ask for what they need. See which work is running, waiting or ready for review.</p>
+</li>
+<li>
+<h3>Choose when to step in</h3>
+<p>Set approval requirements per task. Answer requests and review the results before finishing the workflow.</p>
+</li>
+</ol>
+<a class="text-link" href={`${base}usage#workflows`}>Explore Workflows</a>
+</div>
+</section>
+<section class="section" id="what">
+<div class="wrap feature-pair">
+<div>
+<h2>The work stays<br>in context.</h2>
+<p>You shouldn’t have to reconstruct a project from separate chat windows. Embodent connects the people, agents and decisions around each piece of work.</p>
+<a class="text-link" href={`${base}usage#collaboration`}>See how the team communicates</a>
+</div>
+<dl class="feature-list">
+<div>
+<dt>Tasks with a clear outcome</dt>
+<dd>Assign the work, follow its progress and keep the discussion alongside the deliverable.</dd>
+</div>
+<div>
+<dt>Requests with a reply</dt>
+<dd>See what an agent needs from you or a teammate, and keep the answer connected to the question.</dd>
+</div>
+<div>
+<dt>A conversation when you need one</dt>
+<dd>Talk directly with an agent to explore an idea or give direction.</dd>
+</div>
+</dl>
+</div>
+</section>
+<section class="wrap closing" id="quickstart">
+<div>
+<h2>Start with one project.</h2>
+<p>Bring your agents. Give them something to work toward.</p>
+</div>
+<a class="button primary" href={`${base}installation`}>Get started</a>
+</section>
 </Base>
