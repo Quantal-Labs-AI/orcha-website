@@ -1,7 +1,7 @@
 # Embodent website
 
 The public website for **Embodent (formerly Orcha)**, built with Astro and hosted
-on GitHub Pages at https://openorcha.io.
+on GitHub Pages at https://embodent.com.
 
 ## Pages
 
@@ -34,7 +34,8 @@ JavaScript adds the phone menu, appearance preference and copy feedback.
 Without JavaScript, navigation and all guide content remain available.
 
 Dark is the default. Light and System choices are stored only in this browser.
-The existing public Cloudflare beacon configuration is retained.
+Cloudflare Web Analytics is off: `CF_BEACON_TOKEN` in `src/consts.js` is empty, so
+no beacon loads. Paste a token for an embodent.com analytics site there to turn it on.
 The workshop illustration contains invented example data, with a visible caption.
 Old guide anchors remain available; the old videos remain stored but unlinked.
 
@@ -57,6 +58,6 @@ Implementation branches and local builds do not deploy. Kedar reviews the local
 preview before the separate publication step opens a pull request; only a human
 may merge. This implementation does not authorize publication.
 
-`public/CNAME` retains `openorcha.io`. `astro.config.mjs` keeps that canonical
+`public/CNAME` retains `embodent.com`. `astro.config.mjs` keeps that canonical
 origin and `/` as the base; for project Pages, set the base to the repository path.
 All local links and assets respect the configured base.
