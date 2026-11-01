@@ -1,7 +1,7 @@
 # Embodent website
 
 The public website for **Embodent (formerly Orcha)**, built with Astro and hosted
-on GitHub Pages at https://openorcha.io.
+on GitHub Pages at https://embodent.com.
 
 ## Pages
 
@@ -57,6 +57,6 @@ Implementation branches and local builds do not deploy. Kedar reviews the local
 preview before the separate publication step opens a pull request; only a human
 may merge. This implementation does not authorize publication.
 
-`public/CNAME` retains `openorcha.io`. `astro.config.mjs` keeps that canonical
+`public/CNAME` retains `embodent.com`. `astro.config.mjs` keeps that canonical
 origin and `/` as the base; for project Pages, set the base to the repository path.
 All local links and assets respect the configured base.
