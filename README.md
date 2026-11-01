@@ -34,7 +34,8 @@ JavaScript adds the phone menu, appearance preference and copy feedback.
 Without JavaScript, navigation and all guide content remain available.
 
 Dark is the default. Light and System choices are stored only in this browser.
-The existing public Cloudflare beacon configuration is retained.
+Cloudflare Web Analytics is off: `CF_BEACON_TOKEN` in `src/consts.js` is empty, so
+no beacon loads. Paste a token for an embodent.com analytics site there to turn it on.
 The workshop illustration contains invented example data, with a visible caption.
 Old guide anchors remain available; the old videos remain stored but unlinked.
 

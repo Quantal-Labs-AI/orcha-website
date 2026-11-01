@@ -21,10 +21,12 @@ export const MAC_ZIP_URL = `${REPO}/releases/download/${RELEASE_TAG}/Embodent-${
 // ── Analytics ────────────────────────────────────────────────────────────────
 // Cloudflare Web Analytics beacon token. Privacy-friendly, cookieless, free —
 // no consent banner needed. PASTE the token from your Cloudflare dashboard here
-// (Cloudflare → Web Analytics → add openorcha.io → copy the token). It is NOT a
+// (Cloudflare → Web Analytics → add embodent.com → copy the token). It is NOT a
 // secret: Cloudflare embeds it in the public page anyway. Until it is filled in
 // the snippet simply does not render, so the site keeps working as-is.
-export const CF_BEACON_TOKEN = '874beb3c5c7f4f08be7582312b3ccdd9';
+// Empty since the move to embodent.com: the old token only counted openorcha.io
+// visits, and Kedar chose not to set up analytics for embodent.com for now.
+export const CF_BEACON_TOKEN = '';
 
 // GitHub Releases API for the code repo — the Stats page reads the live Mac-app
 // download count from here (public, no auth). Mac-app assets (.dmg/.zip) live on
